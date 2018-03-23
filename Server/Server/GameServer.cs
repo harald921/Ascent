@@ -54,6 +54,14 @@ class GameServer
 
     void ProcessDataMessage(NetIncomingMessage inMsg)
     {
+        DataMessageType messageType = (DataMessageType)inMsg.ReadByte();
 
+        if (messageType == DataMessageType.Command)
+            NetCommandHandler.ProcessCommand(inMsg);
     }
 }
+
+
+
+
+
