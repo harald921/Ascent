@@ -101,5 +101,7 @@ namespace Lidgren.Network
 		/// A roundtrip was measured and NetConnection.AverageRoundtripTime was updated
 		/// </summary>
 		ConnectionLatencyUpdated = 1 << 12, // Seconds as a Single
-	}
+
+        Command
+    }
 }
