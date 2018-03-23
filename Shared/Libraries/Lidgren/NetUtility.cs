@@ -282,6 +282,21 @@ namespace Lidgren.Network
 			return bits;
 		}
 
+        /// <summary>
+        /// Returns how many bits are necessary to hold a certain number. Casts the absolute value to uint.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int BitsToHoldUInt(int value)
+        {
+            value = Math.Abs(value);
+            uint uintValue = (uint)value;
+
+            int bits = 1;
+            while ((uintValue >>= 1) != 0)
+                bits++;
+            return bits;
+        }
+
 		/// <summary>
 		/// Returns how many bits are necessary to hold a certain number
 		/// </summary>

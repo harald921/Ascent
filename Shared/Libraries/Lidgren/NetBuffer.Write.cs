@@ -500,11 +500,33 @@ namespace Lidgren.Network
 			return retval;
 		}
 
-		/// <summary>
-		/// Write Base128 encoded variable sized signed integer of up to 32 bits
-		/// </summary>
-		/// <returns>number of bytes written</returns>
-		public int WriteVariableInt32(int value)
+        /// <summary>
+        /// Write Base128 encoded variable sized unsigned integer of up to 32 bits. Casts the absolute value to uint.
+        /// </summary>
+        /// <returns>number of bytes written</returns>
+        [CLSCompliant(false)]
+        public int WriteVariableUInt32(int value)
+        {
+            value = Math.Abs(value);
+            uint uintValue = (uint)value;
+
+            int retval = 1;
+            uint num1 = (uint)value;
+            while (num1 >= 0x80)
+            {
+                this.Write((byte)(num1 | 0x80));
+                num1 = num1 >> 7;
+                retval++;
+            }
+            this.Write((byte)num1);
+            return retval;
+        }
+
+        /// <summary>
+        /// Write Base128 encoded variable sized signed integer of up to 32 bits
+        /// </summary>
+        /// <returns>number of bytes written</returns>
+        public int WriteVariableInt32(int value)
 		{
 			uint zigzag = (uint)(value << 1) ^ (uint)(value >> 31);
 			return WriteVariableUInt32(zigzag);
