@@ -22,7 +22,7 @@ public class World
         // DEBUG:
         _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));
 
-        NetworkManager.OnPlayerJoin += (NetConnection inConnection) =>
+        NetworkManager.OnClientConnected += (NetConnection inConnection) =>
             Network.Send(_data, EDataPacketTypes.WorldData, inConnection, NetDeliveryMethod.ReliableUnordered);
 
     }
@@ -32,7 +32,7 @@ public class World
     {
         public const uint chunkSize = 64;
 
-        public static readonly Noise.Parameters[] parameters = new Noise.Parameters[]
+        public readonly Noise.Parameters[] parameters = new Noise.Parameters[]
         {
                 // Height map
                 new Noise.Parameters()

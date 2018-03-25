@@ -6,6 +6,8 @@ class NetworkManager
 {
     static NetServer _server;
 
+    public static event Action<NetConnection> OnClientConnected;
+
     public NetworkManager(string inAppName)
     {
         var peerConfiguration = new NetPeerConfiguration(inAppName) {
