@@ -53,6 +53,7 @@
     <Compile Include="Shared\Code\DataMessageType.cs" />
     <Compile Include="Shared\Code\IPackable.cs" />
     <Compile Include="Shared\Code\MultiThreader.cs" />
+    <Compile Include="Terrain.cs" />
     <Compile Include="TerrainGenerator.cs" />
     <Compile Include="Shared\Code\Vector2DInt.cs" />
     <Compile Include="Shared\Code\Vector3DInt.cs" />
@@ -130,7 +131,6 @@
     <Compile Include="Shared\Libraries\Lidgren\Platform\PlatformUnityExtras.cs" />
     <Compile Include="Shared\Libraries\Lidgren\Platform\PlatformWin32.cs" />
     <Compile Include="Shared\Libraries\Lidgren\Platform\PlatformWinRT.cs" />
-    <Compile Include="Shared\Libraries\Lidgren\Properties\AssemblyInfo.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
@@ -232,7 +232,6 @@
     <None Include="Shared\Libraries\Lidgren\Platform\PlatformWin32.cs.meta" />
     <None Include="Shared\Libraries\Lidgren\Platform\PlatformWinRT.cs.meta" />
     <None Include="Shared\Libraries\Lidgren\Properties.meta" />
-    <None Include="Shared\Libraries\Lidgren\Properties\AssemblyInfo.cs.meta" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shared\Libraries\Lidgren\Documentation\ChangedFromV2.txt" />
@@ -242,6 +241,9 @@
     <Content Include="Shared\Libraries\Lidgren\Documentation\SimulatingBadNetwork.html" />
     <Content Include="Shared\Libraries\Lidgren\Documentation\TODO.txt" />
     <Content Include="Shared\Libraries\Lidgren\Documentation\Tutorial.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Shared\Libraries\Lidgren\Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

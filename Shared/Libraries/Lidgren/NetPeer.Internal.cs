@@ -145,7 +145,7 @@ namespace Lidgren.Network
                     LogDebug("Platform doesn't support SIO_UDP_CONNRESET");
                 }
 			}
-			catch (System.Exception e)
+			catch 
 			{
                 LogDebug("Platform doesn't support SIO_UDP_CONNRESET");
 				// this will be thrown on linux but not mac if it doesn't exist.
