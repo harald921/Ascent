@@ -17,7 +17,7 @@ public class World
 
     public World()
     {
-        chunkGenerator = new ChunkGenerator(Data.chunkSize, Data.parameters, this);
+        chunkGenerator = new ChunkGenerator(Data.chunkSize, _data.parameters, this);
 
         // DEBUG:
         _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));

@@ -6,7 +6,7 @@ public struct Vector2DInt : IPackable
 {
     public int x, y;
 
-    public Vector2DInt Zero => new Vector2DInt(0, 0);
+    public static Vector2DInt Zero => new Vector2DInt(0, 0);
 
 
     public Vector2DInt(int inX, int inY)
