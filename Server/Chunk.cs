@@ -5,10 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using Lidgren.Network;
 
-class Chunk
+public class Chunk
 {
-    class Data
-    {
+    readonly public Data data;
 
+
+    public Chunk(Data inData)
+    {
+        data = inData;
+    }
+
+
+    public class Data
+    {
+        public readonly Vector2DInt position;
+
+        Tile[,] _tiles;
+
+
+        public Data(Vector2DInt inPosition)
+        {
+            position = inPosition;
+        }
+
+
+        public Tile GetTile(Vector2DInt inTileCoords) => 
+            _tiles[inTileCoords.x, inTileCoords.y];
+
+        public void SetTile(Vector2DInt inTileCoords, Tile inTile) => 
+            _tiles[inTileCoords.x, inTileCoords.y] = inTile;
+
+        public void SetTiles(Tile[,] inTiles) =>
+            _tiles = inTiles;
     }
 }

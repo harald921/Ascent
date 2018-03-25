@@ -17,13 +17,13 @@ public class World
 
     public World()
     {
-        chunkGenerator = new ChunkGenerator(Data.chunkSize, _data.parameters, this);
+        chunkGenerator = new ChunkGenerator(Data.chunkSize, _data.parameters);
 
         // DEBUG:
         _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));
 
-        NetworkManager.OnClientConnected += (NetConnection inConnection) =>
-            Network.Send(_data, EDataPacketTypes.WorldData, inConnection, NetDeliveryMethod.ReliableUnordered);
+        // NetworkManager.OnClientConnected += (NetConnection inConnection) =>
+        //     Network.Send(_data, EDataPacketTypes.WorldData, inConnection, NetDeliveryMethod.ReliableUnordered);
 
     }
 
