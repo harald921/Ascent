@@ -13,6 +13,8 @@ public class Chunk
     public Chunk(Data inData)
     {
         data = inData;
+
+        Console.WriteLine("New Chunk: " + data.position.x + "," + data.position.y);
     }
 
 

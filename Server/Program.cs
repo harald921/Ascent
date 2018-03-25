@@ -15,13 +15,14 @@ class Program
     static void Main()
     {
         var networkManager = new NetworkManager(APPLICATION_NAME);
+        var world          = new World(); 
 
         while (_isRunning)
         {
             networkManager.Update();
             // playerManager.Update()?
             // creatureManager.Update();
-            // world.Update();
+            // world update??
         }
     }
 }
