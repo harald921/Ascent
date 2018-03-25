@@ -12,13 +12,18 @@ class Program
     static bool _isRunning = true;
     public static void Quit() => _isRunning = false;
 
+    int _myInt;
 
     static void Main()
     {
+        var networkManager = new NetworkManager(APPLICATION_NAME);
+
         while (_isRunning)
         {
-
+            networkManager.Update();
+            // playerManager.Update()?
+            // creatureManager.Update();
+            // world.Update();
         }
     }
-
 }

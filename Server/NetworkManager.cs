@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using Lidgren.Network;
 
-class GameServer
+class NetworkManager
 {
     static NetServer _server;
 
-
-    public GameServer(string inAppName)
+    public NetworkManager(string inAppName)
     {
         var peerConfiguration = new NetPeerConfiguration(inAppName) {
             Port = Constants.Networking.PORT
@@ -18,6 +17,11 @@ class GameServer
         _server.Start();
     }
 
+
+    public void Update()
+    {
+        ProcessMessages();
+    }
 
     public void ProcessMessages()
     {

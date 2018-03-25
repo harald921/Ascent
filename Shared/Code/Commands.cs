@@ -5,21 +5,21 @@ using Lidgren.Network;
 
 public static class NetCommandHandler
 {
+    static Dictionary<NetCommand.Type, INetCommand> _netCommands = new Dictionary<NetCommand.Type, INetCommand>()
+    {
+        { NetCommand.Type.MovePlayer, new NetCommand.MovePlayer() },
+    };
+
     public static void ProcessCommand(NetIncomingMessage inMsg)
     {
-        NetCommandType commandType = (NetCommandType)inMsg.ReadByte();
-        switch (commandType)
-        {
-            case NetCommandType.MovePlayer:
-                System.Console.WriteLine("Move player");
-                break;
-        }
+        NetCommand.Type commandType = (NetCommand.Type)inMsg.ReadByte();
+        _netCommands[commandType].RecieveAndExecute(inMsg);
     }
 }
 
-public static class NetCommand
+public class NetCommand
 {
-    public static class MovePlayer
+    public class MovePlayer : INetCommand
     {
         public static void Send(/*Player inPlayer, Vector2DInt inDirection*/)
         {
@@ -31,7 +31,7 @@ public static class NetCommand
             // Ask Lidgren to send message object 
         }
     
-        public static void RecieveAndExecute(NetIncomingMessage inMsg)
+        public void RecieveAndExecute(NetIncomingMessage inMsg)
         {
             // Deserialize Player ID
             // Deserialize Direction
@@ -39,9 +39,28 @@ public static class NetCommand
             // Invoke methods
         }
     }
+    
+    public class RequestWorldData : INetCommand
+    {
+        public static void Send()
+        {
+    
+        }
+    
+        public void RecieveAndExecute(NetIncomingMessage inMsg)
+        {
+    
+        }
+    
+    }
+
+    public enum Type
+    {
+        MovePlayer
+    }
 }
 
-public enum NetCommandType
+public interface INetCommand
 {
-    MovePlayer
+    void RecieveAndExecute(NetIncomingMessage inMsg);
 }
