@@ -9,35 +9,50 @@ public partial class Character
     Components _components;
     public Components components => _components;
 
-    public Character(Components inComponents)
+    public static Guid _guid;
+
+    public Character(Species inSpecies)
     {
-        _components = inComponents;
+        _guid = Guid.NewGuid();
+        
+        _components = TempCharacterPreset.GetCharacterPreset(inSpecies, this);
     }
 
     public struct Components
     {
-        public HealthComponent  healthComponent;
+        public HealthComponent   healthComponent;
         public MovementComponent movementComponent;
+    }
+
+    public enum Species
+    {
+        Human
     }
 }
 
 
 partial class Character
 {
-    public static class Presets
+    public static class TempCharacterPreset
     {
-        public static Components Human()
+        public static Components GetCharacterPreset(Species inSpecies, Character inCharacter)
         {
-            return new Components()
+            switch (inSpecies)
             {
-                healthComponent = new HealthComponent(new HealthComponent.Stats() {
-                    maxHealth = 100
-                }),
+                case Species.Human:
+                    return new Components() {
+                        healthComponent = new HealthComponent(new HealthComponent.Stats() {
+                            maxHealth = 100
+                        }),
 
-                movementComponent = new MovementComponent(new MovementComponent.Stats() {
-                    baseMoveSpeed = 10
-                })
-            };
+                        movementComponent = new MovementComponent(inCharacter, new MovementComponent.Stats() {
+                            baseMoveSpeed = 10
+                        })
+                    };
+            }
+
+            Console.WriteLine("Catastrophe happened in TempCharacterPreset.GetCharacterPreset()");
+            return new Components();
         }
     }
 }

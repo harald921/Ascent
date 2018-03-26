@@ -11,7 +11,8 @@ public class Tile
     public readonly Vector2DInt chunkPosition;
     // public Vector2DInt worldPosition 
 
-    Terrain terrain;
+    List<Character> _characters = new List<Character>();
+    Terrain _terrain;
 
 
     public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkPosition, Terrain inTerrain)
@@ -19,7 +20,7 @@ public class Tile
         localPosition = inLocalPosition;
         chunkPosition = inChunkPosition;
 
-        terrain = inTerrain;
+        _terrain = inTerrain;
     }
 
 
@@ -29,4 +30,11 @@ public class Tile
 
     // public Tile GetNearbyTile(Vector2DInt inDirection) =>
     //    World.TilePositionToChunkPosition(worldPosition).data.GetTile(worldPosition + inDirection);
+
+
+    public void CharacterEnter(Character inCharacter) =>
+        _characters.Add(inCharacter);
+
+    public void CharacterExit(Character inCharacter) => 
+        _characters.Remove(inCharacter);
 }
