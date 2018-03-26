@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Shared\Libraries\Json.NET\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="CharacterHealth.cs" />
+    <Compile Include="CharacterManager.cs" />
     <Compile Include="CharacterMovement.cs" />
     <Compile Include="Chunk.cs" />
     <Compile Include="ChunkGenerator.cs" />
@@ -237,6 +242,9 @@
     <None Include="Shared\Libraries\Lidgren\Properties.meta" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Shared\Libraries\Json.NET\Newtonsoft.Json.dll" />
+    <Content Include="Shared\Libraries\Json.NET\Newtonsoft.Json.pdb" />
+    <Content Include="Shared\Libraries\Json.NET\Newtonsoft.Json.xml" />
     <Content Include="Shared\Libraries\Lidgren\Documentation\ChangedFromV2.txt" />
     <Content Include="Shared\Libraries\Lidgren\Documentation\Discovery.html" />
     <Content Include="Shared\Libraries\Lidgren\Documentation\Improvements.txt" />

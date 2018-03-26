@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 public partial class Character
 {
-    Components _components;
-    public Components components => _components;
+    public Species    species    { get; private set; }
+    public Components components { get; private set; }
 
     public static Guid _guid;
 
-    public Character(Species inSpecies)
+
+    public Character(Species inSpecies)                                                                                                                                                 
     {
         _guid = Guid.NewGuid();
-        
-        _components = TempCharacterPreset.GetCharacterPreset(inSpecies, this);
+
+        species = inSpecies;
+        components = TempCharacterPreset.GetCharacterPreset(inSpecies, this);
     }
+
 
     public struct Components
     {
@@ -29,7 +32,6 @@ public partial class Character
         Human
     }
 }
-
 
 partial class Character
 {

@@ -1,0 +1,15 @@
+{
+  "species": 0,
+  "components": {
+    "healthComponent": {
+      "stats": {
+        "maxHealth": 100
+      }
+    },
+    "movementComponent": {
+      "stats": {
+        "baseMoveSpeed": 10.0
+      }
+    }
+  }
+}
