@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Character.cs" />
+    <Compile Include="CharacterHealth.cs" />
+    <Compile Include="CharacterMovement.cs" />
     <Compile Include="Chunk.cs" />
     <Compile Include="ChunkGenerator.cs" />
     <Compile Include="NetworkManager.cs" />

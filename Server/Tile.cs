@@ -13,6 +13,7 @@ public class Tile
 
     Terrain terrain;
 
+
     public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkPosition, Terrain inTerrain)
     {
         localPosition = inLocalPosition;
@@ -20,4 +21,12 @@ public class Tile
 
         terrain = inTerrain;
     }
+
+
+    // TODO: Write this one, but properly
+    public Tile GetNearbyTile(Vector2DInt inDirection) =>
+        World.GetChunk(chunkPosition).data.GetTile(localPosition + inDirection);
+
+    // public Tile GetNearbyTile(Vector2DInt inDirection) =>
+    //    World.TilePositionToChunkPosition(worldPosition).data.GetTile(worldPosition + inDirection);
 }
