@@ -11,7 +11,7 @@ public class Tile
     public readonly Vector2DInt chunkPosition;
     // public Vector2DInt worldPosition 
 
-    List<Character> _characters = new List<Character>();
+    List<Creature> _characters = new List<Creature>();
     Terrain _terrain;
 
 
@@ -32,9 +32,9 @@ public class Tile
     //    World.TilePositionToChunkPosition(worldPosition).data.GetTile(worldPosition + inDirection);
 
 
-    public void CharacterEnter(Character inCharacter) =>
+    public void CharacterEnter(Creature inCharacter) =>
         _characters.Add(inCharacter);
 
-    public void CharacterExit(Character inCharacter) => 
+    public void CharacterExit(Creature inCharacter) => 
         _characters.Remove(inCharacter);
 }

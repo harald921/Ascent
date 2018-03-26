@@ -9,13 +9,13 @@ public static class Constants
     {
         public static readonly string BASE;
         public static readonly string DATA;
-        public static readonly string CHARACTERS;
+        public static readonly string SPECIES;
 
         static Directory()
         {
             BASE       = System.IO.Path.GetFullPath(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\"));
             DATA       = BASE + @"Data";
-            CHARACTERS = BASE + @"Data\Characters";
+            SPECIES    = BASE + @"Data\Characters";
         }
     }
 

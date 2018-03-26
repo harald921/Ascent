@@ -5,22 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-partial class Character
+partial class Creature
 {
     public class MovementComponent
     {
-        readonly Character _character;
-
-        Stats _stats;
-        public Stats stats => _stats;
+        readonly Creature _character;
 
         Tile _currentTile;
 
 
-        public MovementComponent(Character inCharacter, Stats inStats)
+        public MovementComponent(Creature inCharacter)
         {
             _character = inCharacter;
-            _stats = inStats;
         }
 
 
@@ -37,12 +33,6 @@ partial class Character
 
             inFromTile.CharacterExit(_character);
             inToTile.CharacterEnter(_character);
-        }
-
-
-        public struct Stats
-        {
-            public float baseMoveSpeed;
         }
     }
 }

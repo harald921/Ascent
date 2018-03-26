@@ -46,10 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Character.cs" />
-    <Compile Include="CharacterHealth.cs" />
-    <Compile Include="CharacterManager.cs" />
-    <Compile Include="CharacterMovement.cs" />
+    <Compile Include="Creature.cs" />
+    <Compile Include="CreatureHealthComponent.cs" />
+    <Compile Include="SpeciesManager.cs" />
+    <Compile Include="CreatureMovementComponent.cs" />
     <Compile Include="Chunk.cs" />
     <Compile Include="ChunkGenerator.cs" />
     <Compile Include="NetworkManager.cs" />

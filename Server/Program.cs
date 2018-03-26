@@ -18,10 +18,7 @@ class Program
         var networkManager = new NetworkManager(APPLICATION_NAME);
         var world          = new World();
 
-        CharacterManager.DoTheThing();
-
-        // string path = Constants.BASE_DIRECTORY + @"Data\Characters\Human.json";
-        // System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(new Character(Character.Species.Human), Formatting.Indented));
+        new Creature(Creature.Species.Human);
 
         while (_isRunning)
         {
