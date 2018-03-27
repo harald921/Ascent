@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Lidgren.Network;
 
-public class World
+public partial class World
 {
     Data _data = new Data();
 
@@ -22,9 +22,12 @@ public class World
         // DEBUG:
         _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));
 
+        Creature newCreature = new Creature(Species.Type.Human, _worldChunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero));
+
+        newCreature.movementComponent.MoveInDirection(new Vector2DInt(0, 1));
+
         // NetworkManager.OnClientConnected += (NetConnection inConnection) =>
         //     Network.Send(_data, EDataPacketTypes.WorldData, inConnection, NetDeliveryMethod.ReliableUnordered);
-
     }
 
 

@@ -14,7 +14,7 @@ public class Chunk
     {
         data = inData;
 
-        Console.WriteLine("New Chunk: " + data.position.x + "," + data.position.y);
+        Console.WriteLine("New Chunk at: " + data.position.x + "," + data.position.y);
     }
 
 

@@ -9,14 +9,16 @@ partial class Creature
 {
     public class MovementComponent
     {
-        readonly Creature _character;
+        readonly Creature _creature;
 
         Tile _currentTile;
 
 
-        public MovementComponent(Creature inCharacter)
+        public MovementComponent(Creature inCreature, Tile inSpawnTile)
         {
-            _character = inCharacter;
+            _creature = inCreature;
+
+            _currentTile = inSpawnTile;
         }
 
 
@@ -31,8 +33,12 @@ partial class Creature
         {
             _currentTile = inToTile;
 
-            inFromTile.CharacterExit(_character);
-            inToTile.CharacterEnter(_character);
+            inFromTile.CharacterExit(_creature);
+            inToTile.CharacterEnter(_creature);
+
+            Console.WriteLine("Moved from " + inFromTile.localPosition.x + "," + inFromTile.localPosition.y + 
+                              " to "        + inToTile.localPosition.x + "," + inToTile.localPosition.y);
         }
+
     }
 }

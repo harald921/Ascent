@@ -18,7 +18,6 @@ class Program
         var networkManager = new NetworkManager(APPLICATION_NAME);
         var world          = new World();
 
-
         while (_isRunning)
         {
             networkManager.Update();

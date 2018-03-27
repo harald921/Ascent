@@ -14,10 +14,10 @@ public static class SpeciesManager
     public static Species GetSpecies(Species.Type inSpecies) => _speciesData[inSpecies];
 
 
-
     // Constructor
     static SpeciesManager() =>
         LoadAndDeserializeSpecies();
+
 
     public static void CreateNewSpecies(Species inSpecies) =>
         File.WriteAllText(Constants.Directory.SPECIES + @"\" + inSpecies.data.type.ToString() + ".json", JsonConvert.SerializeObject(inSpecies, Formatting.Indented));

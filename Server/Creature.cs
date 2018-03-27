@@ -7,28 +7,21 @@ using Newtonsoft.Json;
 
 public partial class Creature
 {
-    public readonly Components components;
-    public readonly Species species;
+    public readonly Guid    guid;    
+
+    public readonly Species species; 
+
+    public readonly HealthComponent   healthComponent;      
+    public readonly MovementComponent movementComponent;
 
 
-    public Creature(Species.Type inSpeciesType)                                                                                                                                                 
+    public Creature(Species.Type inSpeciesType, Tile inSpawnTile)                                                                                                                                                 
     {
+        guid    = Guid.NewGuid();
         species = SpeciesManager.GetSpecies(inSpeciesType);
 
-        components = new Components(this);
-    }
-
-
-    public class Components
-    {
-        public readonly HealthComponent   healthComponent;
-        public readonly MovementComponent movementComponent;
-
-        public Components(Creature inCharacter)
-        {
-            healthComponent   = new HealthComponent(inCharacter);
-            movementComponent = new MovementComponent(inCharacter);
-        }
+        healthComponent   = new HealthComponent(this);
+        movementComponent = new MovementComponent(this, inSpawnTile);
     }
 }
 
