@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class MultiThreader
 {
-    List<Job> _currentJobs = new List<Job>();
+    List<IJob> _currentJobs = new List<IJob>();
 
     public void ManualUpdate()
     {
@@ -15,18 +15,18 @@ public class MultiThreader
     {
         for (int i = _currentJobs.Count - 1; i >= 0; i--)
         {
-            Job currentJob = _currentJobs[i];
-            if (!currentJob.jobThread.IsAlive)
+            IJob currentJob = _currentJobs[i];
+            if (!currentJob.GetThread().IsAlive)
             {
-                currentJob.mainThreadCallback(currentJob.result);
+                currentJob.MainThreadCallback();
                 _currentJobs.RemoveAt(i);
             }
         }
     }
 
-    public void DoThreaded(Func<object> inMethodToThread, Action<object> inMainThreadCallback)
+    public void DoThreaded<T>(Func<T> inMethodToThread, Action<T> inMainThreadCallback)
     {
-        Job newJob = new Job();
+        Job<T> newJob = new Job<T>();
 
         lock (_currentJobs)
             _currentJobs.Add(newJob);
@@ -36,18 +36,33 @@ public class MultiThreader
 
         newJob.jobThread = new Thread(newJob.Execute);
         newJob.jobThread.Start();
+
+        
     }
 
-
-    class Job
+    interface IJob
     {
-        public Func<object> methodToThread;       // The method that needs to be threaded. It returns an object.
-        public Action<object> mainThreadCallback; // The callback that should run when the work is complete. It takes an object as a parameter.
+        Thread GetThread();
+        void Execute();
+        void MainThreadCallback();
+    }
 
-        public Thread jobThread;                  // The thread which the threaded method is run on
+    class Job<T> : IJob
+    {
+        public Func<T>   methodToThread;     // The method that needs to be threaded. It returns an object.
+        public Action<T> mainThreadCallback; // The callback that should run when the work is complete. It takes an object as a parameter.
 
-        public object result;                     // The result of the thread. This will be set whenever the job is done.
+        public Thread jobThread;             // The thread which the threaded method is run on
 
-        public void Execute() => result = methodToThread();
+        public T result;                     // The result of the thread. This will be set whenever the job is done.
+
+
+        public Thread GetThread() => jobThread;
+
+        public void Execute() => 
+            result = methodToThread();
+
+        public void MainThreadCallback() =>
+            mainThreadCallback(result);
     }
 }
