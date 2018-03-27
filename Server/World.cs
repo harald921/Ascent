@@ -7,23 +7,27 @@ using Lidgren.Network;
 
 public partial class World
 {
+    static World instance;
+
     Data _data = new Data();
 
     static Dictionary<Vector2DInt, Chunk> _worldChunks = new Dictionary<Vector2DInt, Chunk>();
     public static Chunk GetChunk(Vector2DInt inChunkPos) => _worldChunks[inChunkPos];
 
-    public ChunkGenerator chunkGenerator { get; private set; }
-
+    public readonly ChunkGenerator chunkGenerator;
+    public readonly CreatureHolder creatureHolder;
 
     public World()
     {
+        instance = this;
+
         chunkGenerator = new ChunkGenerator(Data.chunkSize, _data.parameters);
+        creatureHolder = new CreatureHolder();
 
         // DEBUG:
         _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));
 
-        Creature newCreature = new Creature(Species.Type.Human, _worldChunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero));
-
+        Creature newCreature = creatureHolder.SpawnCreature(Species.Type.Human, _worldChunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero));
         newCreature.movementComponent.MoveInDirection(new Vector2DInt(0, 1));
 
         // NetworkManager.OnClientConnected += (NetConnection inConnection) =>
