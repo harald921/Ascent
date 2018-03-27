@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Lidgren.Network;
@@ -21,14 +22,15 @@ public class NetCommand
 {
     public class MovePlayer : INetCommand
     {
-        public static void Send(/*Player inPlayer, Vector2DInt inDirection*/)
+        public static void Send(NetClient inSourceClient, Guid inCreatureGuid, Vector2DInt inDirection)
         {
-            // Create message object
-            // Serialize ECommandType.MovePlayer
-            // Serialize Player ID
-            // Serialize Direction
-    
-            // Ask Lidgren to send message object 
+            NetOutgoingMessage newMessage = inSourceClient.CreateMessage();
+
+            newMessage.WriteVariableUInt32((int)Type.MovePlayer);
+            
+            inDirection.PackInto(newMessage);
+
+            inSourceClient.SendMessage(newMessage, NetDeliveryMethod.ReliableUnordered);
         }
     
         public void RecieveAndExecute(NetIncomingMessage inMsg)
