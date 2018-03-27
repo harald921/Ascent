@@ -1,5 +1,7 @@
 {
-  "species": 0,
-  "maxHealth": 100,
-  "baseMoveSpeed": 10
+  "data": {
+    "type": 0,
+    "baseHealth": 100,
+    "baseMoveSpeed": 10
+  }
 }

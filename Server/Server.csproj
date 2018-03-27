@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Creature.cs" />
     <Compile Include="CreatureHealthComponent.cs" />
+    <Compile Include="Species.cs" />
     <Compile Include="SpeciesManager.cs" />
     <Compile Include="CreatureMovementComponent.cs" />
     <Compile Include="Chunk.cs" />

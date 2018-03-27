@@ -16,6 +16,7 @@ partial class Creature
         public HealthComponent(Creature inCharacter)
         {
             _character = inCharacter;
+            _currentHealth = _character.species.data.baseHealth;
         }
     }
 }

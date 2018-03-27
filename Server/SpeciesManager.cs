@@ -7,33 +7,34 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 
+// Handles serializing and deserializing of species
 public static class SpeciesManager
 {
-    static Dictionary<Creature.Species, Creature.Data> _speciesData = new Dictionary<Creature.Species, Creature.Data>();
-    
-    public static Creature.Data GetSpeciesData(Creature.Species inSpecies) =>
-        _speciesData[inSpecies];
+    static Dictionary<Species.Type, Species> _speciesData = new Dictionary<Species.Type, Species>();
+    public static Species GetSpecies(Species.Type inSpecies) => _speciesData[inSpecies];
+
 
 
     // Constructor
-    static SpeciesManager()
+    static SpeciesManager() =>
+        LoadAndDeserializeSpecies();
+
+    public static void CreateNewSpecies(Species inSpecies) =>
+        File.WriteAllText(Constants.Directory.SPECIES + @"\" + inSpecies.data.type.ToString() + ".json", JsonConvert.SerializeObject(inSpecies, Formatting.Indented));
+
+
+    static void LoadAndDeserializeSpecies()
     {
-        Console.WriteLine("Loading species data from disk...");
-        string[] speciesFiles = Directory.GetFiles(Constants.Directory.SPECIES);
-        foreach (string speciesFile in speciesFiles)
-        {
-            Creature.Data deserializedSpeciesData = JsonConvert.DeserializeObject<Creature.Data>(File.ReadAllText(speciesFile));
-            _speciesData.Add(deserializedSpeciesData.species, deserializedSpeciesData);
-        }
-        
-        // Log every templated species
-        foreach (KeyValuePair<Creature.Species, Creature.Data> entry in _speciesData)
-            Console.WriteLine(entry.Key.ToString());
+        string[] speciesFilePaths = Directory.GetFiles(Constants.Directory.SPECIES);
+        foreach (string speciesFilePath in speciesFilePaths)
+            DeserializeAndAddToDictionary(speciesFilePath);
     }
 
-
-
-    public static void CreateNewSpecies(Creature.Data inData) =>
-        File.WriteAllText(Constants.Directory.SPECIES + @"\Human.json", JsonConvert.SerializeObject(inData, Formatting.Indented));
+    static void DeserializeAndAddToDictionary(string inFilePath)
+    {
+        string jsonText = File.ReadAllText(inFilePath);
+        Species deserializedSpecies = JsonConvert.DeserializeObject<Species>(jsonText);
+        _speciesData.Add(deserializedSpecies.data.type, deserializedSpecies);
+    }
 }
 

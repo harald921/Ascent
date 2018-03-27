@@ -8,27 +8,16 @@ using Newtonsoft.Json;
 public partial class Creature
 {
     public readonly Components components;
-    public readonly Data data;
+    public readonly Species species;
 
 
-    public Creature(Species inSpecies)                                                                                                                                                 
+    public Creature(Species.Type inSpeciesType)                                                                                                                                                 
     {
-        data = SpeciesManager.GetSpeciesData(inSpecies);
+        species = SpeciesManager.GetSpecies(inSpeciesType);
 
         components = new Components(this);
     }
 
-
-    public class Data
-    {
-        public Species species;
-
-        // Health
-        public int maxHealth;
-
-        // Movement
-        public int baseMoveSpeed;
-    }
 
     public class Components
     {
@@ -40,12 +29,6 @@ public partial class Creature
             healthComponent   = new HealthComponent(inCharacter);
             movementComponent = new MovementComponent(inCharacter);
         }
-    }
-
-    public enum Species
-    {
-        Human,
-        Cow,
     }
 }
 
