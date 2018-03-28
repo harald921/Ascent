@@ -11,49 +11,68 @@ public static class NetCommandHandler
         { NetCommand.Type.MovePlayer, new NetCommand.MovePlayer() },
     };
 
+
     public static void ProcessCommand(NetIncomingMessage inMsg)
     {
         NetCommand.Type commandType = (NetCommand.Type)inMsg.ReadByte();
         _netCommands[commandType].RecieveAndExecute(inMsg);
     }
+
+    public static void SendCommand(NetClient inSourceClient, INetCommand inNetCommand)
+    {
+        NetOutgoingMessage newMessage = inSourceClient.CreateMessage();
+
+        newMessage.WriteVariableInt32((int)inNetCommand.type);
+        inNetCommand.data.PackInto(newMessage);
+    }
 }
+
+
 
 public class NetCommand
 {
-    public class MovePlayer : INetCommand
+    public struct MovePlayer : INetCommand
     {
-        public static void Send(NetClient inSourceClient, Guid inCreatureGuid, Vector2DInt inDirection)
-        {
-            NetOutgoingMessage newMessage = inSourceClient.CreateMessage();
+        public Type type => Type.MovePlayer;
 
-            newMessage.WriteVariableUInt32((int)Type.MovePlayer);
-            
-            inDirection.PackInto(newMessage);
+        Data _data;
+        public IPackable data => _data;
 
-            inSourceClient.SendMessage(newMessage, NetDeliveryMethod.ReliableUnordered);
-        }
-    
+
+        public MovePlayer(Data inData) =>
+            _data = inData;
+
+
         public void RecieveAndExecute(NetIncomingMessage inMsg)
         {
-            // Deserialize Player ID
-            // Deserialize Direction
-    
-            // Invoke methods
+            data.UnpackFrom(inMsg);
+
+            World.instance.creatureHolder.GetCreature(_data.creatureGuid).movementComponent.MoveInDirection(_data.direction);
         }
-    }
-    
-    public class RequestWorldData : INetCommand
-    {
-        public static void Send()
+
+
+        public struct Data : IPackable
         {
-    
+            public Guid        creatureGuid;
+            public Vector2DInt direction;
+
+
+            public int GetPacketSize() =>
+                creatureGuid.GetPacketSize() + direction.GetPacketSize();
+
+            public void PackInto(NetOutgoingMessage inMsg)
+            {
+                creatureGuid.PackInto(inMsg);
+                direction.PackInto(inMsg);
+
+            }
+
+            public void UnpackFrom(NetIncomingMessage inMsg)
+            {
+                creatureGuid.UnpackFrom(inMsg);
+                direction.UnpackFrom(inMsg);
+            }
         }
-    
-        public void RecieveAndExecute(NetIncomingMessage inMsg)
-        {
-    
-        }
-    
     }
 
     public enum Type
@@ -64,5 +83,7 @@ public class NetCommand
 
 public interface INetCommand
 {
+    NetCommand.Type type { get; }
+    IPackable data { get; }
     void RecieveAndExecute(NetIncomingMessage inMsg);
 }

@@ -7,7 +7,7 @@ using Lidgren.Network;
 
 public partial class World
 {
-    static World instance;
+    public static World instance;
 
     Data _data = new Data();
 

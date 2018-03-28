@@ -13,14 +13,20 @@ public static class Constants
 
         static Directory()
         {
-            BASE       = System.IO.Path.GetFullPath(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\"));
-            DATA       = BASE + @"Data";
-            SPECIES    = BASE + @"Data\Characters";
+            BASE    = System.IO.Path.GetFullPath(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\"));
+            DATA    = BASE + @"Data";
+            SPECIES = BASE + @"Data\Characters";
         }
     }
 
     public static class Networking
     {
-        public const int PORT = 12345;
+        public const int    PORT        = 12345;
+        public const string HOST_ADRESS = "127.0.0.1";
+
+        public static class Sizes
+        {
+            public const int INT_SIZE = 32;
+        }
     }
 }

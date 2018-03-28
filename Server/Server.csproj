@@ -152,6 +152,7 @@
     <None Include="Shared\Code\DataMessageType.cs.meta" />
     <None Include="Shared\Code\IPackable.cs.meta" />
     <None Include="Shared\Code\MultiThreader.cs.meta" />
+    <Compile Include="Shared\Code\System.Guid.Extensions.cs" />
     <None Include="Shared\Code\Vector2DInt.cs.meta" />
     <None Include="Shared\Code\Vector3DInt.cs.meta" />
     <None Include="Shared\Libraries.meta" />
