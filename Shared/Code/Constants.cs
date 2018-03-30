@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public static class Constants
 {
     public const int BOOL_SIZE_IN_BITS = 8;
+    public const string APPLICATION_NAME = "Ascent";
 
     public static class Directory
     {

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using Lidgren.Network;
 
-class NetworkManager
+public class NetworkManager
 {
-    static NetServer _server;
+    public static NetworkManager instance;
+    public readonly NetServer server;
 
     public static event Action<NetConnection> OnClientConnected;
 
@@ -14,9 +15,9 @@ class NetworkManager
             Port = Constants.Networking.PORT
         };
 
-        _server = new NetServer(peerConfiguration);
+        server = new NetServer(peerConfiguration);
 
-        _server.Start();
+        server.Start();
     }
 
 
@@ -28,7 +29,7 @@ class NetworkManager
     public void ProcessMessages()
     {
         NetIncomingMessage message;
-        while ((message = _server.ReadMessage()) != null)
+        while ((message = server.ReadMessage()) != null)
         {
             switch (message.MessageType)
             {
@@ -52,6 +53,8 @@ class NetworkManager
         }
     }
 
+    public void Send(NetOutgoingMessage inMsg, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableUnordered) =>
+        server.SendMessage(inMsg, inTargetConnection, inDeliveryMethod);
 
     void OnClientStatusChanged(NetConnectionStatus inNewStatus, NetIncomingMessage inMsg)
     {
@@ -60,10 +63,10 @@ class NetworkManager
 
     void ProcessDataMessage(NetIncomingMessage inMsg)
     {
-        DataMessageType messageType = (DataMessageType)inMsg.ReadByte();
+        DataMessageType messageType = (DataMessageType)inMsg.ReadVariableUInt32();
 
         if (messageType == DataMessageType.Command)
-            NetCommandHandler.ProcessCommand(inMsg);
+            CommandHandler.ProcessCommand(inMsg);
     }
 }
 

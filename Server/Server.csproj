@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandler.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="CreatureHealthComponent.cs" />
     <Compile Include="Species.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Shared\Code\Noise.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shared\Code\Commands.cs" />
+    <Compile Include="Shared\Code\Command.cs" />
     <Compile Include="Shared\Code\Constants.cs" />
     <Compile Include="Shared\Code\DataMessageType.cs" />
     <Compile Include="Shared\Code\IPackable.cs" />
@@ -147,7 +148,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Shared\Code.meta" />
-    <None Include="Shared\Code\Commands.cs.meta" />
+    <None Include="Shared\Code\Command.cs.meta" />
     <None Include="Shared\Code\Constants.cs.meta" />
     <None Include="Shared\Code\DataMessageType.cs.meta" />
     <None Include="Shared\Code\IPackable.cs.meta" />
