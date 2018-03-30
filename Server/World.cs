@@ -35,7 +35,7 @@ public partial class World
     }
 
 
-    class Data : IInPackable
+    class Data
     {
         public const uint chunkSize = 64;
 
@@ -51,27 +51,5 @@ public partial class World
                     seed        = 0
                 }
         };
-
-        // Networking
-        public int GetPacketSize()
-        {
-            int bitsNeeded = 0;
-            bitsNeeded += NetUtility.BitsToHoldUInt(chunkSize);
-            bitsNeeded += NetUtility.BitsToHoldUInt((uint)parameters.Length);
-
-            for (int i = 0; i < parameters.Length; i++)
-                bitsNeeded += parameters[i].GetPacketSize();
-
-            return bitsNeeded;
-        }
-
-        public void PackInto(NetOutgoingMessage inMsg)
-        {
-            inMsg.WriteVariableUInt32(chunkSize);
-            inMsg.WriteVariableUInt32((uint)parameters.Length);
-
-            for (int i = 0; i < parameters.Length; i++)
-                parameters[i].PackInto(inMsg);
-        }
     }
 }

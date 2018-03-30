@@ -63,8 +63,8 @@ public class NetworkManager
 
     void ProcessDataMessage(NetIncomingMessage inMsg)
     {
-        DataMessageType messageType = (DataMessageType)inMsg.ReadVariableUInt32();
-
+        DataMessageType messageType = (DataMessageType)inMsg.ReadVariableInt32();
+        
         if (messageType == DataMessageType.Command)
             CommandHandler.ProcessCommand(inMsg);
     }

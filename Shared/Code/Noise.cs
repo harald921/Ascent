@@ -22,42 +22,12 @@ public class Noise
         return noiseMap;
     }
 
-    public struct Parameters : IPackable
+    public struct Parameters
     {
         public uint  scale;
         public uint  octaves;
         public float persistance;
         public float lacunarity;
         public uint  seed;
-
-        // Networking
-        public int GetPacketSize()
-        {
-            int bitsNeeded = 0;
-            bitsNeeded += NetUtility.BitsToHoldUInt(scale);
-            bitsNeeded += NetUtility.BitsToHoldUInt(octaves);
-            bitsNeeded += 32;
-            bitsNeeded += 32;
-            bitsNeeded += NetUtility.BitsToHoldUInt(seed);
-            return bitsNeeded;
-        }
-
-        public void PackInto(NetOutgoingMessage inMsg)
-        {
-            inMsg.WriteVariableUInt32(scale);
-            inMsg.WriteVariableUInt32(octaves);
-            inMsg.Write(persistance);
-            inMsg.Write(lacunarity);
-            inMsg.WriteVariableUInt32(seed);
-        }
-
-        public void UnpackFrom(NetIncomingMessage inMsg)
-        {
-            inMsg.ReadVariableUInt32(out scale);
-            inMsg.ReadVariableUInt32(out octaves);
-            inMsg.ReadSingle(out persistance);
-            inMsg.ReadSingle(out lacunarity);
-            inMsg.ReadVariableUInt32(out seed);
-        }
     }
 }
