@@ -309,7 +309,6 @@
     <Compile Include="Assets\Shared\Code\Command.cs" />
     <Compile Include="Assets\Shared\Code\Constants.cs" />
     <Compile Include="Assets\Shared\Code\DataMessageType.cs" />
-    <Compile Include="Assets\Shared\Code\IPackable.cs" />
     <Compile Include="Assets\Shared\Code\MultiThreader.cs" />
     <Compile Include="Assets\Shared\Code\Noise.cs" />
     <Compile Include="Assets\Shared\Code\System.Guid.Extensions.cs" />
