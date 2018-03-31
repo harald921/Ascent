@@ -29,7 +29,7 @@ public partial class Command
         {
             public override void RecieveAndExecute(NetIncomingMessage inMsg)
             {
-                // data.UnpackFrom(inMsg);
+                data = (Data)inMsg.UnpackObjectFrom();
                 
                 World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
             }
@@ -39,8 +39,7 @@ public partial class Command
         {
             public override void RecieveAndExecute(NetIncomingMessage inMsg)
             {
-                // data.UnpackFrom(inMsg);
-
+                data = (Data)inMsg.UnpackObjectFrom();
                 
                 Console.WriteLine(data.testInt);
             }

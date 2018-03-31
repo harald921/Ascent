@@ -311,6 +311,7 @@
     <Compile Include="Assets\Shared\Code\DataMessageType.cs" />
     <Compile Include="Assets\Shared\Code\MultiThreader.cs" />
     <Compile Include="Assets\Shared\Code\Noise.cs" />
+    <Compile Include="Assets\Shared\Code\Packet.cs" />
     <Compile Include="Assets\Shared\Code\System.Guid.Extensions.cs" />
     <Compile Include="Assets\Shared\Code\Vector2DInt.cs" />
     <Compile Include="Assets\Shared\Code\Vector3DInt.cs" />

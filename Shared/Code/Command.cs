@@ -8,7 +8,8 @@ using Lidgren.Network;
 
 public abstract partial class Command
 {
-    public abstract Type      type         { get; }
+    public abstract Type   type         { get; }
+    public abstract Packet dataAsPacket { get; }
 
     public virtual void RecieveAndExecute(NetIncomingMessage inMsg) { }
 
@@ -17,11 +18,9 @@ public abstract partial class Command
         NetOutgoingMessage newMessage = inSourcePeer.CreateMessage();
 
         newMessage.WriteVariableInt32((int)DataMessageType.Command);
-
         newMessage.WriteVariableInt32((int)type);
-        
-        // dataAsPacket.PackInto(newMessage);
-        // Serialize data using new methods
+
+        dataAsPacket.PackInto(newMessage);
 
         NetworkManager.instance.Send(newMessage, inTargetConnection, inDeliveryMethod);
     }
@@ -34,6 +33,7 @@ public abstract partial class Command
             public Data data { get; private set; }
 
             public override Type type => Type.MovePlayer;
+            public override Packet dataAsPacket => data;
 
             public MovePlayer() { }
             public MovePlayer(Data inData)
@@ -42,7 +42,8 @@ public abstract partial class Command
             }
 
 
-            public struct Data
+            [Serializable]
+            public class Data : Packet
             {
                 public Guid creatureGuid;
                 public Vector2DInt direction;
@@ -57,6 +58,7 @@ public abstract partial class Command
             public Data data { get; private set; }
 
             public override Type type => Type.TestCommand;
+            public override Packet dataAsPacket => data;
 
             public TestCommand() { }
             public TestCommand(Data inData)
@@ -65,14 +67,13 @@ public abstract partial class Command
             }
 
 
-            public struct Data 
+            [Serializable]
+            public class Data : Packet
             {
                 public int testInt;
             }
         }
     }
-
-
 
     public enum Type
     {
