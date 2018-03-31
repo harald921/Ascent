@@ -4,24 +4,19 @@ using System.Collections.Generic;
 using System.Reflection;
 using Lidgren.Network;
 
-
-
 public abstract partial class Command
 {
     public abstract Type      type         { get; }
-
+    public abstract IPackable dataAsPacket { get; }
     public virtual void RecieveAndExecute(NetIncomingMessage inMsg) { }
 
     public void Send(NetPeer inSourcePeer, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableUnordered)
     {
         NetOutgoingMessage newMessage = inSourcePeer.CreateMessage();
 
-        newMessage.WriteVariableInt32((int)DataMessageType.Command);
-
-        newMessage.WriteVariableInt32((int)type);
-        
-        // dataAsPacket.PackInto(newMessage);
-        // Serialize data using new methods
+        newMessage.WriteVariableUInt32((int)DataMessageType.Command);
+        newMessage.WriteVariableUInt32((int)type);
+        dataAsPacket.PackInto(newMessage);
 
         NetworkManager.instance.Send(newMessage, inTargetConnection, inDeliveryMethod);
     }
@@ -34,6 +29,8 @@ public abstract partial class Command
             public Data data { get; private set; }
 
             public override Type type => Type.MovePlayer;
+            public override IPackable dataAsPacket => data;
+
 
             public MovePlayer() { }
             public MovePlayer(Data inData)
@@ -42,10 +39,26 @@ public abstract partial class Command
             }
 
 
-            public struct Data
+            public struct Data : IPackable
             {
                 public Guid creatureGuid;
                 public Vector2DInt direction;
+
+
+                public int GetPacketSize() =>
+                    creatureGuid.GetPacketSize() + direction.GetPacketSize();
+
+                public void PackInto(NetOutgoingMessage inMsg)
+                {
+                    creatureGuid.PackInto(inMsg);
+                    direction.PackInto(inMsg);
+                }
+
+                public void UnpackFrom(NetIncomingMessage inMsg)
+                {
+                    creatureGuid.UnpackFrom(inMsg);
+                    direction.UnpackFrom(inMsg);
+                }
             }
         }
 
@@ -54,6 +67,8 @@ public abstract partial class Command
             public Data data { get; private set; }
 
             public override Type type => Type.TestCommand;
+            public override IPackable dataAsPacket => data;
+
 
             public TestCommand() { }
             public TestCommand(Data inData)
@@ -62,14 +77,24 @@ public abstract partial class Command
             }
 
 
-            public struct Data 
+            public struct Data : IPackable
             {
-                public int testInt;
+                public Vector2DInt direction;
+
+
+                public int GetPacketSize() =>
+                    direction.GetPacketSize();
+
+                public void PackInto(NetOutgoingMessage inMsg) =>
+                    direction.PackInto(inMsg);
+
+                public void UnpackFrom(NetIncomingMessage inMsg) =>
+                    direction.UnpackFrom(inMsg);
             }
         }
     }
 
-
+    
 
     public enum Type
     {

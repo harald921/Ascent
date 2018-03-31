@@ -18,11 +18,12 @@ public class NetworkManager
         client = new NetClient(config);
 
         client.Start();
+
+        client.Connect(host: Constants.Networking.HOST_ADRESS,
+                        port: Constants.Networking.PORT);
     }
 
-    public void Send(NetOutgoingMessage inMsg, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableUnordered)
-    {
+    public void Send(NetOutgoingMessage inMsg, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableUnordered) =>
         client.SendMessage(inMsg, inTargetConnection, inDeliveryMethod);
-    }
 
 }

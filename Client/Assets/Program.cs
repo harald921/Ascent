@@ -14,14 +14,16 @@ public class Program : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            NetworkManager.instance.client.Connect(host: Constants.Networking.HOST_ADRESS,
-                port: Constants.Networking.PORT);
-
         if (Input.GetKeyDown(KeyCode.E))
             new Command.Server.TestCommand(new Command.Server.TestCommand.Data()
             {
-                testInt = 5
+                direction = new Vector2DInt(0, 21)
+            }).Send(_networkManager.client, _networkManager.client.ServerConnection);
+
+        if (Input.GetKeyDown(KeyCode.D))
+            new Command.Server.TestCommand(new Command.Server.TestCommand.Data()
+            {
+                direction = new Vector2DInt(123, -40)
             }).Send(_networkManager.client, _networkManager.client.ServerConnection);
 
     }

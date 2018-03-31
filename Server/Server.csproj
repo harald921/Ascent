@@ -61,6 +61,7 @@
     <Compile Include="Shared\Code\Command.cs" />
     <Compile Include="Shared\Code\Constants.cs" />
     <Compile Include="Shared\Code\DataMessageType.cs" />
+    <Compile Include="Shared\Code\IPackable.cs" />
     <Compile Include="Shared\Code\MultiThreader.cs" />
     <Compile Include="Terrain.cs" />
     <Compile Include="TerrainGenerator.cs" />
