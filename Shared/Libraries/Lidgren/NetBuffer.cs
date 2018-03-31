@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Lidgren.Network
 {
@@ -96,48 +94,5 @@ namespace Lidgren.Network
 				}
 			}
 		}
-
-        // Serializes an object into the out going message.
-        public void PackObjectInto(NetOutgoingMessage outMsg, object obj)
-        {
-            byte[] objBytes = SerializeObject(obj);
-
-            outMsg.Write(objBytes.Length);
-            outMsg.Write(objBytes);
-        }
-
-        // Decodes the next object stored in the in message.
-        public object UnpackObjectFrom(NetIncomingMessage inMsg)
-        {
-            int objectLength = inMsg.ReadInt32();
-            byte[] objectBytes = inMsg.ReadBytes(objectLength);
-
-            return DeserializeObject(objectBytes);
-        }
-
-        // Convert an object that has been marked as [Serializable] into a byte array.
-        byte[] SerializeObject(object obj)
-        {
-            BinaryFormatter binFormatter = new BinaryFormatter();
-
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                binFormatter.Serialize(memStream, obj);
-                return memStream.ToArray();
-            }
-        }
-
-        // Convert a byte array back into the original object it was.
-        object DeserializeObject(byte[] bytes)
-        {
-            BinaryFormatter binFormatter = new BinaryFormatter();
-
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                memStream.Write(bytes, 0, bytes.Length);
-                memStream.Seek(0, SeekOrigin.Begin);
-                return binFormatter.Deserialize(memStream);
-            }
-        }
-    }
+	}
 }

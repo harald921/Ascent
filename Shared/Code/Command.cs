@@ -49,9 +49,6 @@ public abstract partial class Command
             }
         }
 
-
-
-
         public partial class TestCommand : Command
         {
             public Data data { get; private set; }
