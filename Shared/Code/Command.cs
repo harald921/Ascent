@@ -14,8 +14,9 @@ public abstract partial class Command
     {
         NetOutgoingMessage newMessage = inSourcePeer.CreateMessage();
 
-        newMessage.WriteVariableUInt32((int)DataMessageType.Command);
-        newMessage.WriteVariableUInt32((int)type);
+        newMessage.WriteVariableInt32((int)DataMessageType.Command);
+        newMessage.WriteVariableInt32((int)type);
+
         dataAsPacket.PackInto(newMessage);
 
         NetworkManager.instance.Send(newMessage, inTargetConnection, inDeliveryMethod);
@@ -26,7 +27,7 @@ public abstract partial class Command
     {
         public partial class MovePlayer : Command
         {
-            public Data data { get; private set; }
+            public readonly Data data = new Data();
 
             public override Type type => Type.MovePlayer;
             public override IPackable dataAsPacket => data;
@@ -39,7 +40,7 @@ public abstract partial class Command
             }
 
 
-            public struct Data : IPackable
+            public class Data : IPackable
             {
                 public Guid creatureGuid;
                 public Vector2DInt direction;
@@ -56,49 +57,16 @@ public abstract partial class Command
 
                 public void UnpackFrom(NetIncomingMessage inMsg)
                 {
-                    creatureGuid.UnpackFrom(inMsg);
+                    creatureGuid = creatureGuid.UnpackFrom(inMsg);
                     direction.UnpackFrom(inMsg);
                 }
             }
         }
-
-        public partial class TestCommand : Command
-        {
-            public Data data { get; private set; }
-
-            public override Type type => Type.TestCommand;
-            public override IPackable dataAsPacket => data;
-
-
-            public TestCommand() { }
-            public TestCommand(Data inData)
-            {
-                data = inData;
-            }
-
-
-            public struct Data : IPackable
-            {
-                public Vector2DInt direction;
-
-
-                public int GetPacketSize() =>
-                    direction.GetPacketSize();
-
-                public void PackInto(NetOutgoingMessage inMsg) =>
-                    direction.PackInto(inMsg);
-
-                public void UnpackFrom(NetIncomingMessage inMsg) =>
-                    direction.UnpackFrom(inMsg);
-            }
-        }
     }
-
     
 
     public enum Type
     {
         MovePlayer,
-        TestCommand
     }
 }

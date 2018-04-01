@@ -38,8 +38,6 @@ namespace Lidgren.Network
 	/// </summary>
 	public static partial class NetUtility
 	{
-		private static readonly bool IsMono = Type.GetType("Mono.Runtime") != null;
-
 		/// <summary>
 		/// Resolve endpoint callback
 		/// </summary>
@@ -273,7 +271,6 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Returns how many bits are necessary to hold a certain number
 		/// </summary>
-		[CLSCompliant(false)]
 		public static int BitsToHoldUInt(uint value)
 		{
 			int bits = 1;
@@ -285,7 +282,6 @@ namespace Lidgren.Network
         /// <summary>
         /// Returns how many bits are necessary to hold a certain number. Casts the absolute value to uint.
         /// </summary>
-        [CLSCompliant(false)]
         public static int BitsToHoldUInt(int value)
         {
             value = Math.Abs(value);
@@ -300,7 +296,6 @@ namespace Lidgren.Network
 		/// <summary>
 		/// Returns how many bits are necessary to hold a certain number
 		/// </summary>
-		[CLSCompliant(false)]
 		public static int BitsToHoldUInt64(ulong value)
 		{
 			int bits = 1;
@@ -375,12 +370,6 @@ namespace Lidgren.Network
 		internal static int RelativeSequenceNumber(int nr, int expected)
 		{
 			return (nr - expected + NetConstants.NumSequenceNumbers + (NetConstants.NumSequenceNumbers / 2)) % NetConstants.NumSequenceNumbers - (NetConstants.NumSequenceNumbers / 2);
-
-			// old impl:
-			//int retval = ((nr + NetConstants.NumSequenceNumbers) - expected) % NetConstants.NumSequenceNumbers;
-			//if (retval > (NetConstants.NumSequenceNumbers / 2))
-			//	retval -= NetConstants.NumSequenceNumbers;
-			//return retval;
 		}
 
 		/// <summary>

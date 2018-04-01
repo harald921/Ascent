@@ -15,14 +15,16 @@ public class Program : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
-            new Command.Server.TestCommand(new Command.Server.TestCommand.Data()
+            new Command.Server.MovePlayer(new Command.Server.MovePlayer.Data()
             {
+                creatureGuid = System.Guid.NewGuid(),
                 direction = new Vector2DInt(0, 21)
             }).Send(_networkManager.client, _networkManager.client.ServerConnection);
 
         if (Input.GetKeyDown(KeyCode.D))
-            new Command.Server.TestCommand(new Command.Server.TestCommand.Data()
+            new Command.Server.MovePlayer(new Command.Server.MovePlayer.Data()
             {
+                creatureGuid = System.Guid.NewGuid(),
                 direction = new Vector2DInt(123, -40)
             }).Send(_networkManager.client, _networkManager.client.ServerConnection);
 

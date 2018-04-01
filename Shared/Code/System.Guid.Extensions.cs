@@ -17,10 +17,10 @@ public static class SystemGuidExtensions
         inMsg.Write(guidBytes, 0, GUID_NUM_BYTES);
     }
 
-	public static void UnpackFrom(this Guid inGuid, NetIncomingMessage inMsg)
+	public static Guid UnpackFrom(this Guid inGuid, NetIncomingMessage inMsg)
     {
         byte[] guidBytes = inMsg.ReadBytes(GUID_NUM_BYTES);
 
-        inGuid = new Guid(guidBytes);
+        return new Guid(guidBytes);
     }
 }

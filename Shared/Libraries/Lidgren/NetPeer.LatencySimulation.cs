@@ -66,10 +66,7 @@ namespace Lidgren.Network
 			float r = m_configuration.m_randomOneWayLatency;
 			if (m == 0.0f && r == 0.0f)
 			{
-				// no latency simulation
-				// LogVerbose("Sending packet " + numBytes + " bytes");
-				bool wasSent = ActuallySendPacket(m_sendBuffer, numBytes, target, out connectionReset);
-				// TODO: handle wasSent == false?
+				ActuallySendPacket(m_sendBuffer, numBytes, target, out connectionReset);
 
 				if (m_configuration.m_duplicates > 0.0f && MWCRandom.Instance.NextDouble() < m_configuration.m_duplicates)
 					ActuallySendPacket(m_sendBuffer, numBytes, target, out connectionReset); // send it again!

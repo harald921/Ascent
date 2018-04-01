@@ -10,7 +10,6 @@ class CommandHandler
     static Dictionary<Command.Type, Command> _netCommands = new Dictionary<Command.Type, Command>()
     {
         { Command.Type.MovePlayer, new Command.Server.MovePlayer() },
-        { Command.Type.TestCommand, new Command.Server.TestCommand() }
     };
 
 
@@ -30,18 +29,9 @@ public partial class Command
             public override void RecieveAndExecute(NetIncomingMessage inMsg)
             {
                 dataAsPacket.UnpackFrom(inMsg);
-                
-                World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
-            }
-        }
 
-        public partial class TestCommand : Command
-        {
-            public override void RecieveAndExecute(NetIncomingMessage inMsg)
-            {
-                dataAsPacket.UnpackFrom(inMsg);
-
-                Console.WriteLine(data.direction.x + ", " + data.direction.y);
+                // World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
+                Console.WriteLine("Move " + data.creatureGuid + " in direction: (" + data.direction.x + ", " + data.direction.y + ")");
             }
         }
     }
