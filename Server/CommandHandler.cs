@@ -7,7 +7,7 @@ using Lidgren.Network;
 
 class CommandHandler
 {
-    static Dictionary<Command.Type, Command> _netCommands = new Dictionary<Command.Type, Command>()
+    static Dictionary<Command.Type, Command> _serverCommands = new Dictionary<Command.Type, Command>()
     {
         { Command.Type.MovePlayer, new Command.Server.MovePlayer() },
     };
@@ -15,8 +15,8 @@ class CommandHandler
 
     public static void ProcessCommand(NetIncomingMessage inMsg)
     {
-        Command.Type commandType = (Command.Type)inMsg.ReadVariableUInt32();
-        _netCommands[commandType].RecieveAndExecute(inMsg);
+        Command.Type commandType = (Command.Type)inMsg.ReadVariableInt32();
+        _serverCommands[commandType].RecieveAndExecute(inMsg);
     }
 }
 
@@ -30,8 +30,7 @@ public partial class Command
             {
                 dataAsPacket.UnpackFrom(inMsg);
 
-                // World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
-                Console.WriteLine("Move " + data.creatureGuid + " in direction: (" + data.direction.x + ", " + data.direction.y + ")");
+                World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
             }
         }
     }

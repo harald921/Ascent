@@ -16,6 +16,9 @@ partial class World
         {
             Creature newCreature = new Creature(inSpeciesType, inSpawnTile);
             _liveCreatures.Add(newCreature.guid, newCreature);
+
+            Console.WriteLine("Spawning new " + inSpeciesType);
+
             return newCreature;
         }
     }

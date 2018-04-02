@@ -64,9 +64,45 @@ public abstract partial class Command
         }
     }
     
+    public partial class Client
+    {
+        public partial class SendPlayerData : Command
+        {
+            public readonly Data data = new Data();
+
+            public override Type type => Type.SendPlayerData;
+            public override IPackable dataAsPacket => data;
+
+
+            public SendPlayerData() { }
+            public SendPlayerData(Data inData)
+            {
+                data = inData;
+            }
+
+
+            public class Data : IPackable
+            {
+                public Guid creatureGuid;
+
+                public int GetPacketSize() =>
+                    creatureGuid.GetPacketSize();
+
+                public void PackInto(NetOutgoingMessage inMsg) =>
+                    creatureGuid.PackInto(inMsg);
+
+                public void UnpackFrom(NetIncomingMessage inMsg) =>
+                    creatureGuid = creatureGuid.UnpackFrom(inMsg);
+            }
+        }
+    }
 
     public enum Type
     {
+        // ClientToServer
         MovePlayer,
+
+        // ServerToClient
+        SendPlayerData
     }
 }

@@ -27,11 +27,14 @@ public partial class World
         // DEBUG:
         _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));
 
-        Creature newCreature = creatureHolder.SpawnCreature(Species.Type.Human, _worldChunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero));
-        newCreature.movementComponent.MoveInDirection(new Vector2DInt(0, 1));
+        NetworkManager.OnClientConnected += (NetConnection inConnection) =>
+            new Command.Client.SendPlayerData(new Command.Client.SendPlayerData.Data()
+            {
+                creatureGuid = creatureHolder.SpawnCreature(Species.Type.Human, _worldChunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero)).guid
+            }).Send(NetworkManager.instance.server, inConnection);
 
-        // NetworkManager.OnClientConnected += (NetConnection inConnection) =>
-        //     Network.Send(_data, EDataPacketTypes.WorldData, inConnection, NetDeliveryMethod.ReliableUnordered);
+            
+            //Network.Send(_data, EDataPacketTypes.WorldData, inConnection, NetDeliveryMethod.ReliableUnordered);
     }
 
 

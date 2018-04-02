@@ -11,6 +11,8 @@ public class NetworkManager
 
     public NetworkManager(string inAppName)
     {
+        instance = this;
+
         var peerConfiguration = new NetPeerConfiguration(inAppName) {
             Port = Constants.Networking.PORT
         };
@@ -59,6 +61,8 @@ public class NetworkManager
     void OnClientStatusChanged(NetConnectionStatus inNewStatus, NetIncomingMessage inMsg)
     {
         Console.WriteLine(inMsg.SenderConnection + ": " + inNewStatus.ToString());
+        if (inNewStatus == NetConnectionStatus.Connected)
+            OnClientConnected(inMsg.SenderConnection);
     }
 
     void ProcessDataMessage(NetIncomingMessage inMsg)

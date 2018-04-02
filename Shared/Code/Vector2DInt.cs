@@ -33,17 +33,11 @@ public struct Vector2DInt : IPackable
     {
         inMsg.WriteVariableInt32(x);
         inMsg.WriteVariableInt32(y);
-
-        inMsg.Write(x < 0);
-        inMsg.Write(y < 0);
     }
 
     public void UnpackFrom(NetIncomingMessage inMsg)
     {
         x = inMsg.ReadVariableInt32();
         y = inMsg.ReadVariableInt32();
-
-        x = inMsg.ReadBoolean() ? -x : x;
-        y = inMsg.ReadBoolean() ? -y : y;
     }
 }
