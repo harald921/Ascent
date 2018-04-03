@@ -62,7 +62,7 @@ public class NetworkManager
     {
         Console.WriteLine(inMsg.SenderConnection + ": " + inNewStatus.ToString());
         if (inNewStatus == NetConnectionStatus.Connected)
-            OnClientConnected(inMsg.SenderConnection);
+            OnClientConnected?.Invoke(inMsg.SenderConnection);
     }
 
     void ProcessDataMessage(NetIncomingMessage inMsg)

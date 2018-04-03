@@ -775,7 +775,7 @@ GameObject:
   - component: {fileID: 1155511583}
   - component: {fileID: 1155511582}
   m_Layer: 5
-  m_Name: Register_Button
+  m_Name: Login_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -886,7 +886,7 @@ GameObject:
   - component: {fileID: 1255119924}
   - component: {fileID: 1255119923}
   m_Layer: 5
-  m_Name: Login_Button
+  m_Name: Register_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1218,8 +1218,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputFieldUsername: {fileID: 995175007}
   _inputFieldPassword: {fileID: 1794910619}
-  _buttonLogin: {fileID: 1255119923}
-  _buttonRegister: {fileID: 1155511582}
+  _buttonLogin: {fileID: 1155511582}
+  _buttonRegister: {fileID: 1255119923}
 --- !u!1 &1539820205
 GameObject:
   m_ObjectHideFlags: 0

@@ -47,11 +47,13 @@ public partial class Command
                 User newUser;
 
                 if (data.registerElseLogin)
-                    newUser = User.Register(inUsername: data.providedUsername,
-                                            inPassword: data.providedUsername);
+                    newUser = User.Register(inUsername:   data.providedUsername,
+                                            inPassword:   data.providedUsername,
+                                            inConnection: inMsg.SenderConnection);
                 else
-                    newUser = User.Load(inUsername: data.providedUsername,
-                                        inPassword: data.providedUsername);
+                    newUser = User.Login(inUsername:   data.providedUsername,
+                                         inPassword:   data.providedUsername,
+                                         inConnection: inMsg.SenderConnection);
                 
                 if (newUser != null)
                 {
