@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Lidgren.Network;
+using System.Text;
 
 public abstract partial class Command
 {
     public abstract Type      type         { get; }
     public abstract IPackable dataAsPacket { get; }
     public virtual void RecieveAndExecute(NetIncomingMessage inMsg) { }
+
 
     public void Send(NetPeer inSourcePeer, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableUnordered)
     {
@@ -62,6 +64,49 @@ public abstract partial class Command
                 }
             }
         }
+
+        public partial class UserLogin : Command
+        {
+            public readonly Data data = new Data();
+
+            public override Type type => Type.UserLogin;
+            public override IPackable dataAsPacket => data;
+
+
+            public UserLogin() { }
+            public UserLogin(Data inData)
+            {
+                data = inData;
+            }
+
+
+            public class Data : IPackable
+            {
+                public bool   registerElseLogin;
+                public string providedUsername;
+                public string providedPassword;
+
+
+                public int GetPacketSize()
+                {
+                    throw new NotImplementedException("Not implemented for packets including strings");
+                }
+
+                public void PackInto(NetOutgoingMessage outMsg)
+                {
+                    outMsg.Write(registerElseLogin);
+                    outMsg.Write(providedUsername);
+                    outMsg.Write(providedPassword);
+                }
+
+                public void UnpackFrom(NetIncomingMessage inMsg)
+                {
+                    registerElseLogin = inMsg.ReadBoolean();
+                    providedUsername  = inMsg.ReadString();
+                    providedPassword  = inMsg.ReadString();
+                }
+            }
+        }
     }
     
     public partial class Client
@@ -101,6 +146,7 @@ public abstract partial class Command
     {
         // ClientToServer
         MovePlayer,
+        UserLogin,
 
         // ServerToClient
         SendPlayerData

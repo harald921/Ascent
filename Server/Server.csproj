@@ -142,6 +142,7 @@
     <Compile Include="Shared\Libraries\Lidgren\Platform\PlatformWin32.cs" />
     <Compile Include="Shared\Libraries\Lidgren\Platform\PlatformWinRT.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldCreatureHolder.cs" />
   </ItemGroup>

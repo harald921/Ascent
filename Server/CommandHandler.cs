@@ -10,6 +10,7 @@ class CommandHandler
     static Dictionary<Command.Type, Command> _serverCommands = new Dictionary<Command.Type, Command>()
     {
         { Command.Type.MovePlayer, new Command.Server.MovePlayer() },
+        { Command.Type.UserLogin,  new Command.Server.UserLogin()  },
     };
 
 
@@ -31,6 +32,36 @@ public partial class Command
                 dataAsPacket.UnpackFrom(inMsg);
 
                 World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
+            }
+        }
+    }
+
+    public partial class Server
+    {
+        public partial class UserLogin : Command
+        {
+            public override void RecieveAndExecute(NetIncomingMessage inMsg)
+            {
+                dataAsPacket.UnpackFrom(inMsg);
+
+                User newUser;
+
+                if (data.registerElseLogin)
+                    newUser = User.Register(inUsername: data.providedUsername,
+                                            inPassword: data.providedUsername);
+                else
+                    newUser = User.Load(inUsername: data.providedUsername,
+                                        inPassword: data.providedUsername);
+                
+                if (newUser != null)
+                {
+                    // Send back User data 
+                }
+
+                else
+                {
+                    // Send back error message
+                }
             }
         }
     }

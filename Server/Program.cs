@@ -25,3 +25,12 @@ class Program
         }
     }
 }
+
+
+//  class User
+/*  
+ *  - Holds list of GUID's representing the characters the user owns
+ *  - Password and Username
+ *  
+ * 
+ */
