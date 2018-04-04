@@ -48,11 +48,11 @@ public partial class Command
 
                 if (data.registerElseLogin)
                     newUser = User.Register(inUsername:   data.providedUsername,
-                                            inPassword:   data.providedUsername,
+                                            inPassword:   data.providedPassword,
                                             inConnection: inMsg.SenderConnection);
                 else
                     newUser = User.Login(inUsername:   data.providedUsername,
-                                         inPassword:   data.providedUsername,
+                                         inPassword:   data.providedPassword,
                                          inConnection: inMsg.SenderConnection);
                 
                 if (newUser != null)

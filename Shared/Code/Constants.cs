@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-public static class Constants
+﻿public static class Constants
 {
     public const int BOOL_SIZE_IN_BITS = 8;
     public const string APPLICATION_NAME = "Ascent";
@@ -29,5 +26,10 @@ public static class Constants
         {
             public const int INT_SIZE = 32;
         }
+    }
+
+    public static class TerrainGeneration
+    {
+        public const int CHUNK_SIZE = 64;
     }
 }

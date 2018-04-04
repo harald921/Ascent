@@ -7,30 +7,26 @@ using Lidgren;
 
 public class Tile
 {
-    public readonly Vector2DInt localPosition;
-    public readonly Vector2DInt chunkPosition;
-    // public Vector2DInt worldPosition 
+    public readonly Vector2DInt localPosition; // The chunk position of the tile
+    public readonly Vector2DInt chunkWorldPosition; // The world position of the chunk
+    public readonly Vector2DInt worldPosition;
 
     List<Creature> _characters = new List<Creature>();
     Terrain _terrain;
 
 
-    public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkPosition, Terrain inTerrain)
+    public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkWorldPosition, Terrain inTerrain)
     {
         localPosition = inLocalPosition;
-        chunkPosition = inChunkPosition;
+        chunkWorldPosition = inChunkWorldPosition;
+        worldPosition = localPosition + (chunkWorldPosition * Constants.TerrainGeneration.CHUNK_SIZE);
 
         _terrain = inTerrain;
     }
 
 
-    // TODO: Write this one, but properly
     public Tile GetNearbyTile(Vector2DInt inDirection) =>
-        World.GetChunk(chunkPosition).data.GetTile(localPosition + inDirection);
-
-    // public Tile GetNearbyTile(Vector2DInt inDirection) =>
-    //    World.TilePositionToChunkPosition(worldPosition).data.GetTile(worldPosition + inDirection);
-
+        World.GetTile(worldPosition + inDirection);
 
     public void CharacterEnter(Creature inCharacter) =>
         _characters.Add(inCharacter);

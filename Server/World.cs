@@ -11,8 +11,7 @@ public partial class World
 
     Data _data = new Data();
 
-    static Dictionary<Vector2DInt, Chunk> _worldChunks = new Dictionary<Vector2DInt, Chunk>();
-    public static Chunk GetChunk(Vector2DInt inChunkPos) => _worldChunks[inChunkPos];
+    static Dictionary<Vector2DInt, Chunk> _chunks = new Dictionary<Vector2DInt, Chunk>();
 
     public readonly ChunkGenerator chunkGenerator;
     public readonly CreatureHolder creatureHolder;
@@ -21,24 +20,41 @@ public partial class World
     {
         instance = this;
 
-        chunkGenerator = new ChunkGenerator(Data.chunkSize, _data.parameters);
+        chunkGenerator = new ChunkGenerator(Constants.TerrainGeneration.CHUNK_SIZE, _data.parameters);
         creatureHolder = new CreatureHolder();
 
         // DEBUG:
-        _worldChunks.Add(Vector2DInt.Zero, chunkGenerator.GenerateChunk(Vector2DInt.Zero));
+        for (int y = 0; y < ServerConstants.TerrainGeneration.WORLD_SIZE; y++)
+            for (int x = 0; x < ServerConstants.TerrainGeneration.WORLD_SIZE; x++)
+                _chunks.Add(new Vector2DInt(x, y), chunkGenerator.GenerateChunk(new Vector2DInt(x, y)));
 
         User.OnUserLogin += (User inUser) =>
             new Command.Client.SendPlayerData(new Command.Client.SendPlayerData.Data()
             {
-                creatureGuid = creatureHolder.SpawnCreature(Species.Type.Human, _worldChunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero)).guid
+                creatureGuid = creatureHolder.SpawnCreature(Species.Type.Human, _chunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero)).guid
             }).Send(NetworkManager.instance.server, inUser.connection);
+    }
+
+
+    public static Chunk GetChunk(Vector2DInt inChunkPos) => _chunks[inChunkPos];
+
+    public static Vector2DInt WorldPosToChunkPos(Vector2DInt inWorldPosition) =>
+        inWorldPosition / Constants.TerrainGeneration.CHUNK_SIZE;
+
+    public static Vector2DInt WorldPosToLocalTilePos(Vector2DInt inWorldPosition) =>
+        inWorldPosition % Constants.TerrainGeneration.CHUNK_SIZE;
+
+    public static Tile GetTile(Vector2DInt inWorldPosition)
+    {
+        Vector2DInt chunkPosition = WorldPosToChunkPos(inWorldPosition);
+        Vector2DInt tilePosition  = WorldPosToLocalTilePos(inWorldPosition);
+
+        return _chunks[chunkPosition].data.GetTile(tilePosition);
     }
 
 
     class Data : IInPackable
     {
-        public const uint chunkSize = 64;
-
         public readonly Noise.Parameters[] parameters = new Noise.Parameters[]
         {
                 // Height map
@@ -56,7 +72,6 @@ public partial class World
         public int GetPacketSize()
         {
             int bitsNeeded = 0;
-            bitsNeeded += NetUtility.BitsToHoldUInt(chunkSize);
             bitsNeeded += NetUtility.BitsToHoldUInt((uint)parameters.Length);
 
             for (int i = 0; i < parameters.Length; i++)
@@ -67,7 +82,6 @@ public partial class World
 
         public void PackInto(NetOutgoingMessage inMsg)
         {
-            inMsg.WriteVariableUInt32(chunkSize);
             inMsg.WriteVariableUInt32((uint)parameters.Length);
 
             for (int i = 0; i < parameters.Length; i++)

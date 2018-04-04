@@ -63,7 +63,7 @@ public class ChunkGenerator
             for (int y = 0; y < _chunkSize; y++)
                 for (int x = 0; x < _chunkSize; x++)
                     newOutput.tiles[x, y] = new Tile(inLocalPosition: new Vector2DInt(x,y), 
-                                                     inChunkPosition: inChunkPosition, 
+                                                     inChunkWorldPosition: inChunkPosition, 
                                                      inTerrain:       new Terrain(TerrainGenerator.GetTerrainType(inNoiseData.heightMap[x,y])));
 
             return newOutput;

@@ -50,6 +50,7 @@
     <Compile Include="Creature.cs" />
     <Compile Include="CreatureHealthComponent.cs" />
     <Compile Include="DebugLoggerSubscriber.cs" />
+    <Compile Include="ServerConstants.cs" />
     <Compile Include="Shared\Code\DebugLogger.cs" />
     <Compile Include="Species.cs" />
     <Compile Include="SpeciesManager.cs" />

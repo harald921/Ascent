@@ -37,7 +37,8 @@ partial class Creature
             inToTile.CharacterEnter(_creature);
 
             Console.WriteLine("Moved from " + inFromTile.localPosition.x + "," + inFromTile.localPosition.y + 
-                              " to "        + inToTile.localPosition.x + "," + inToTile.localPosition.y);
+                              " to "        + inToTile.localPosition.x   + "," + inToTile.localPosition.y   +
+                              "   Chunk: "  + World.WorldPosToChunkPos(inToTile.worldPosition).ToString());
         }
 
     }
