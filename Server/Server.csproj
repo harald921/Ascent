@@ -49,6 +49,8 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="CreatureHealthComponent.cs" />
+    <Compile Include="DebugLoggerSubscriber.cs" />
+    <Compile Include="Shared\Code\DebugLogger.cs" />
     <Compile Include="Species.cs" />
     <Compile Include="SpeciesManager.cs" />
     <Compile Include="CreatureMovementComponent.cs" />

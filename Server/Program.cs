@@ -13,6 +13,8 @@ class Program
 
     static void Main()
     {
+        DebugLoggerSubscriber.Initialize();
+
         var networkManager = new NetworkManager(Constants.APPLICATION_NAME);
         var world          = new World();
 
