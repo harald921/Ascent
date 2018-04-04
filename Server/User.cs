@@ -7,22 +7,21 @@ using Lidgren.Network;
 
 public class User
 {
-    public Data data { get; private set; } = new Data();
+    public Data data { get; private set; }
 
     public NetConnection connection { get; private set; }
 
     List<Guid> _creatureIDs = new List<Guid>();
 
-
-    public void   AddCreature(Guid inCreatureGuid)     => _creatureIDs.Add(inCreatureGuid);
-    public void   RemoveCreature(Guid inCreatureGuid)  => _creatureIDs.Remove(inCreatureGuid);
-    public Guid[] GetCreatures()                       => _creatureIDs.ToArray();
+    public void AddCreature(Guid inCreatureGuid) => _creatureIDs.Add(inCreatureGuid);
+    public Guid[] GetCreatures() => _creatureIDs.ToArray();
 
     public static event Action<User> OnUserLogin;
 
 
     public User(Data inData) =>
         data = inData;
+
 
 
     public static User Login(string inUsername, string inPassword, NetConnection inConnection)

@@ -13,12 +13,16 @@ partial class Creature
 
         Tile _currentTile;
 
+        public event Action<Vector2DInt> OnChunkEnter;
+
 
         public MovementComponent(Creature inCreature, Tile inSpawnTile)
         {
             _creature = inCreature;
 
             _currentTile = inSpawnTile;
+
+            OnChunkEnter += (Vector2DInt inNewChunkPos) => Console.WriteLine("Entered chunk: " + inNewChunkPos.ToString());
         }
 
 
@@ -36,10 +40,14 @@ partial class Creature
             inFromTile.CharacterExit(_creature);
             inToTile.CharacterEnter(_creature);
 
+
+            if (inFromTile.chunkPosition != inToTile.chunkPosition)
+                OnChunkEnter?.Invoke(inToTile.chunkPosition);
+                
+
             Console.WriteLine("Moved from " + inFromTile.localPosition.x + "," + inFromTile.localPosition.y + 
                               " to "        + inToTile.localPosition.x   + "," + inToTile.localPosition.y   +
                               "   Chunk: "  + World.WorldPosToChunkPos(inToTile.worldPosition).ToString());
         }
-
     }
 }

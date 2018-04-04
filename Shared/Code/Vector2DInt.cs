@@ -26,59 +26,57 @@ public struct Vector2DInt : IPackable
         "(" + x + ", " + y + ")";
 
 
-    public static Vector2DInt operator+ (Vector2DInt inVector1, Vector2DInt inVector2)
-    {
-        return new Vector2DInt()
+    public static Vector2DInt operator+ (Vector2DInt inVector1, Vector2DInt inVector2) =>
+        new Vector2DInt()
         {
             x = inVector1.x + inVector2.x,
             y = inVector1.y + inVector2.y
         };
-    }
 
-    public static Vector2DInt operator* (Vector2DInt inVector1, int inInt)
-    {
-        return new Vector2DInt()
+    public static Vector2DInt operator* (Vector2DInt inVector1, int inInt) =>
+        new Vector2DInt()
         {
             x = inVector1.x * inInt,
             y = inVector1.y * inInt
         };
-    }
 
-    public static Vector2DInt operator* (Vector2DInt inVector1, Vector2DInt inVector2)
-    {
-        return new Vector2DInt()
+    public static Vector2DInt operator* (Vector2DInt inVector1, Vector2DInt inVector2) =>
+        new Vector2DInt()
         {
             x = inVector1.x * inVector2.x,
             y = inVector1.y * inVector2.y
         };
-    }
 
-    public static Vector2DInt operator/ (Vector2DInt inVector1, Vector2DInt inVector2)
-    {
-        return new Vector2DInt()
+    public static Vector2DInt operator/ (Vector2DInt inVector1, Vector2DInt inVector2) =>
+        new Vector2DInt()
         {
             x = inVector1.x / inVector2.x,
             y = inVector1.y / inVector2.y
         };
-    }
 
-    public static Vector2DInt operator /(Vector2DInt inVector1, int inInt)
-    {
-        return new Vector2DInt()
+    public static Vector2DInt operator /(Vector2DInt inVector1, int inInt) =>
+        new Vector2DInt()
         {
             x = inVector1.x / inInt,
             y = inVector1.y / inInt
         };
-    }
 
-    public static Vector2DInt operator %(Vector2DInt inVector1, int inInt)
-    {
-        return new Vector2DInt()
+    public static Vector2DInt operator %(Vector2DInt inVector1, int inInt) =>
+        new Vector2DInt()
         {
             x = inVector1.x % inInt,
             y = inVector1.y % inInt
         };
-    }
+
+    public static bool operator == (Vector2DInt inVector1, Vector2DInt inVector2) =>
+        inVector1.x == inVector2.x &&
+        inVector1.y == inVector2.y;
+
+    public static bool operator != (Vector2DInt inVector1, Vector2DInt inVector2) =>
+        inVector1.x != inVector2.x ||
+        inVector1.y != inVector2.y;
+
+
 
     public int GetPacketSize() => NetUtility.BitsToHoldUInt(x) +
                                   NetUtility.BitsToHoldUInt(y) +

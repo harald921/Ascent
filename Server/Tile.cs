@@ -8,18 +8,18 @@ using Lidgren;
 public class Tile
 {
     public readonly Vector2DInt localPosition; // The chunk position of the tile
-    public readonly Vector2DInt chunkWorldPosition; // The world position of the chunk
+    public readonly Vector2DInt chunkPosition; // The world position of the chunk
     public readonly Vector2DInt worldPosition;
 
     List<Creature> _characters = new List<Creature>();
     Terrain _terrain;
 
 
-    public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkWorldPosition, Terrain inTerrain)
+    public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkPosition, Terrain inTerrain)
     {
         localPosition = inLocalPosition;
-        chunkWorldPosition = inChunkWorldPosition;
-        worldPosition = localPosition + (chunkWorldPosition * Constants.TerrainGeneration.CHUNK_SIZE);
+        chunkPosition = inChunkPosition;
+        worldPosition = localPosition + (chunkPosition * Constants.TerrainGeneration.CHUNK_SIZE);
 
         _terrain = inTerrain;
     }
