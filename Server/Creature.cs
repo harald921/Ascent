@@ -13,7 +13,6 @@ public partial class Creature
 
     public readonly HealthComponent   healthComponent;      
     public readonly MovementComponent movementComponent;
-    public readonly ChunkComponent    chunkComponent;
 
     public User owner { get; private set; }
 
@@ -25,7 +24,6 @@ public partial class Creature
 
         healthComponent   = new HealthComponent(this);
         movementComponent = new MovementComponent(this, inSpawnTile);
-        chunkComponent    = new ChunkComponent(inSpawnTile.chunkPosition, ServerConstants.TerrainGeneration.CHUNK_RENDER_DISTANCE);
     }
 
     public void SetOwner(User inNewOwner) =>

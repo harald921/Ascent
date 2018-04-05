@@ -13,6 +13,8 @@ partial class Creature
 
         Tile _currentTile;
 
+        public Vector2DInt currentPosition => _currentTile.worldPosition;
+
         public event Action<Vector2DInt> OnChunkEnter;
 
 

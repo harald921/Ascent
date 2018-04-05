@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lidgren.Network;
 
 public static class UserManager
 {
@@ -26,7 +27,7 @@ public static class UserManager
         Console.WriteLine("Username: " + inUsername);
         Console.WriteLine("Password: " + inPassword);
 
-        // Check if it already exists, if so, error 
+        // Check if it already exists, if so - return "already existing error"
 
         // else...
         User newUser = new User(inConnection);

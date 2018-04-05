@@ -28,12 +28,6 @@ public partial class World
         for (int y = 0; y < ServerConstants.TerrainGeneration.WORLD_SIZE; y++)
             for (int x = 0; x < ServerConstants.TerrainGeneration.WORLD_SIZE; x++)
                 _chunks.Add(new Vector2DInt(x, y), chunkGenerator.GenerateChunk(new Vector2DInt(x, y)));
-
-        User.OnUserLogin += (User inUser) =>
-            new Command.Client.SendPlayerData(new Command.Client.SendPlayerData.Data()
-            {
-                creatureGuid = creatureHolder.SpawnCreature(Species.Type.Human, _chunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero)).guid
-            }).Send(NetworkManager.instance.server, inUser.connection);
     }
 
 
