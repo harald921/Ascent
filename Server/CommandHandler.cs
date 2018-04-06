@@ -31,7 +31,7 @@ public partial class Command
             {
                 dataAsPacket.UnpackFrom(inMsg);
 
-                World.instance.creatureHolder.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
+                World.instance.creatureManager.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
             }
         }
     }

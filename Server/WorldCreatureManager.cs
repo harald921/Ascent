@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 partial class World
 {
-    public class CreatureHolder
+    public class CreatureManager
     {
         readonly Dictionary<Guid, Creature> _liveCreatures = new Dictionary<Guid, Creature>();
         public Creature GetCreature(Guid inGuid) => _liveCreatures[inGuid];
 
 
-        public CreatureHolder()
+        public CreatureManager()
         {
             UserManager.OnUserLogin += (User inUser) =>
             {
                 // TODO: Make it read from disk when Users are permanent
-                Creature newCreature = SpawnCreature(Species.Type.Human, _chunks[Vector2DInt.Zero].data.GetTile(Vector2DInt.Zero));
+                Tile spawnTile = instance.chunkManager.GetChunk(Vector2DInt.Zero).GetTile(Vector2DInt.Zero);
+                Creature newCreature = SpawnCreature(Species.Type.Human, spawnTile);
 
                 inUser.creatureManager.AddCreature(newCreature);
 
+                // Send the id of the creature to the fresh client
                 new Command.Client.SendPlayerData(new Command.Client.SendPlayerData.Data()
                 {
                     creatureGuid = newCreature.guid

@@ -18,14 +18,14 @@ public class ChunkGenerator
 
     public Chunk GenerateChunk(Vector2DInt inPosition)
     {
-        Chunk.Data newData = new Chunk.Data(inPosition);
+        Chunk newChunk = new Chunk(inPosition);
 
         NoiseGenerator.Output noiseData = NoiseGenerator.Generate(inPosition);
         TileMapGenerator.Output tileMap = TileMapGenerator.Generate(inPosition, noiseData);
 
-        newData.SetTiles(tileMap.tiles);
+        newChunk.SetTiles(tileMap.tiles);
 
-        return new Chunk(newData);
+        return newChunk;
     }
 
 

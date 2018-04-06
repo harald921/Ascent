@@ -32,7 +32,7 @@ partial class Creature
             Move(_currentTile, _currentTile.GetNearbyTile(inDirection));
 
         public void Teleport(Vector2DInt inChunkCoords, Vector2DInt inLocalTileCoords) =>
-            Move(_currentTile, World.GetChunk(inChunkCoords).data.GetTile(inLocalTileCoords));
+            Move(_currentTile, World.instance.chunkManager.GetChunk(inChunkCoords).GetTile(inLocalTileCoords));
 
 
         void Move(Tile inFromTile, Tile inToTile)
@@ -49,7 +49,7 @@ partial class Creature
 
             Console.WriteLine("Moved from " + inFromTile.localPosition.x + "," + inFromTile.localPosition.y + 
                               " to "        + inToTile.localPosition.x   + "," + inToTile.localPosition.y   +
-                              "   Chunk: "  + World.WorldPosToChunkPos(inToTile.worldPosition).ToString());
+                              "   Chunk: "  + World.ChunkManager.WorldPosToChunkPos(inToTile.worldPosition).ToString());
         }
     }
 }

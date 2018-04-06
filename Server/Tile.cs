@@ -26,7 +26,7 @@ public class Tile
 
 
     public Tile GetNearbyTile(Vector2DInt inDirection) =>
-        World.GetTile(worldPosition + inDirection);
+        World.instance.chunkManager.GetTile(worldPosition + inDirection);
 
     public void CharacterEnter(Creature inCharacter) =>
         _characters.Add(inCharacter);

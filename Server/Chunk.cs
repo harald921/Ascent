@@ -7,37 +7,24 @@ using Lidgren.Network;
 
 public class Chunk
 {
-    readonly public Data data;
+    public readonly Vector2DInt position;
+
+    Tile[,] _tiles;
 
 
-    public Chunk(Data inData)
+    public Chunk(Vector2DInt inPosition)
     {
-        data = inData;
-
-        Console.WriteLine("New Chunk at: " + data.position.x + "," + data.position.y);
+        position = inPosition;
+        Console.WriteLine("New Chunk at: " + position.x + "," + position.y);
     }
 
 
-    public class Data
-    {
-        public readonly Vector2DInt position;
+    public Tile GetTile(Vector2DInt inTileCoords) =>
+        _tiles[inTileCoords.x, inTileCoords.y];
 
-        Tile[,] _tiles;
+    public void SetTile(Vector2DInt inTileCoords, Tile inTile) =>
+        _tiles[inTileCoords.x, inTileCoords.y] = inTile;
 
-
-        public Data(Vector2DInt inPosition)
-        {
-            position = inPosition;
-        }
-
-
-        public Tile GetTile(Vector2DInt inTileCoords) => 
-            _tiles[inTileCoords.x, inTileCoords.y];
-
-        public void SetTile(Vector2DInt inTileCoords, Tile inTile) => 
-            _tiles[inTileCoords.x, inTileCoords.y] = inTile;
-
-        public void SetTiles(Tile[,] inTiles) =>
-            _tiles = inTiles;
-    }
+    public void SetTiles(Tile[,] inTiles) =>
+        _tiles = inTiles;
 }
