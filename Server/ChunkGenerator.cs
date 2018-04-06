@@ -7,12 +7,14 @@ using Lidgren.Network;
 
 public class ChunkGenerator
 {
+    NoiseGenerator _noiseGenerator;
+    TileMapGenerator _tileMapGenerator;
 
-    // Constructor
+
     public ChunkGenerator(uint inChunkSize, Noise.Parameters[] inNoiseParameters)
     {
-        NoiseGenerator.Initialize(inChunkSize, inNoiseParameters);
-        TileMapGenerator.Initialize(inChunkSize);
+        _noiseGenerator   = new NoiseGenerator(inChunkSize, inNoiseParameters);
+        _tileMapGenerator = new TileMapGenerator(inChunkSize);
     }
 
 
@@ -20,8 +22,8 @@ public class ChunkGenerator
     {
         Chunk newChunk = new Chunk(inPosition);
 
-        NoiseGenerator.Output noiseData = NoiseGenerator.Generate(inPosition);
-        TileMapGenerator.Output tileMap = TileMapGenerator.Generate(inPosition, noiseData);
+        NoiseGenerator.Output   noiseData = _noiseGenerator.Generate(inPosition);
+        TileMapGenerator.Output tileMap   = _tileMapGenerator.Generate(inPosition, noiseData);
 
         newChunk.SetTiles(tileMap.tiles);
 
@@ -29,19 +31,22 @@ public class ChunkGenerator
     }
 
 
-    static class NoiseGenerator
+    class NoiseGenerator
     {
-        static uint _noiseMapSize;
-        static Noise.Parameters[] _noiseParameters;
+        uint _noiseMapSize;
+        Noise.Parameters[] _noiseParameters;
 
-        public static void Initialize(uint inChunkSize, Noise.Parameters[] inNoiseParameters)
+
+        public NoiseGenerator(uint inChunkSize, Noise.Parameters[] inNoiseParameters)
         {
             _noiseMapSize = inChunkSize;
             _noiseParameters = inNoiseParameters;
         }
 
-        public static Output Generate(Vector2DInt inChunkPosition) =>
+
+        public Output Generate(Vector2DInt inChunkPosition) =>
             new Output() { heightMap = Noise.Generate(_noiseMapSize, _noiseParameters[0], inChunkPosition) };
+
 
         public class Output
         {
@@ -49,14 +54,16 @@ public class ChunkGenerator
         }
     }
 
-    static class TileMapGenerator
+    class TileMapGenerator
     {
-        static uint _chunkSize;
+        uint _chunkSize;
 
-        public static void Initialize(uint inChunkSize) =>
+
+        public TileMapGenerator(uint inChunkSize) =>
             _chunkSize = inChunkSize;
 
-        public static Output Generate(Vector2DInt inChunkPosition, NoiseGenerator.Output inNoiseData)
+
+        public Output Generate(Vector2DInt inChunkPosition, NoiseGenerator.Output inNoiseData)
         {
             Output newOutput = new Output(_chunkSize);
 
@@ -68,6 +75,7 @@ public class ChunkGenerator
 
             return newOutput;
         }
+
 
         public class Output
         {
