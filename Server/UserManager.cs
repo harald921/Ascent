@@ -9,6 +9,7 @@ public static class UserManager
 {
     public static event Action<User> OnUserLogin;
 
+
     public static User Login(string inUsername, string inPassword, NetConnection inConnection)
     {
         Console.WriteLine(inUsername + " logging in.");

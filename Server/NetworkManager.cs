@@ -7,7 +7,7 @@ public class NetworkManager
     public static NetworkManager instance;
     public readonly NetServer server;
 
-    public static event Action<NetConnection> OnClientConnected;
+    public event Action<NetConnection> OnClientConnected;
 
     public NetworkManager(string inAppName)
     {
