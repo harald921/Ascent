@@ -2,26 +2,80 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChunkGenerator : MonoBehaviour
+
+public class ChunkGenerator
 {
     static int _chunkSize;
 
-    DataGenerator _dataGenerator;
-    ViewGenerator _viewGenerator;
+    readonly DataGenerator _dataGenerator;
+    readonly ViewGenerator _viewGenerator;
 
 
     public ChunkGenerator(Noise.Parameters[] inNoiseParameters)
     {
-        _chunkSize = Constants.TerrainGeneration.CHUNK_SIZE; 
+        _chunkSize = Constants.TerrainGeneration.CHUNK_SIZE;
+
+        _dataGenerator = new DataGenerator(inNoiseParameters);
+        _viewGenerator = new ViewGenerator();
+    }
+
+
+    public Chunk GenerateChunk(Vector2DInt inPosition)
+    {
+        Chunk.Data chunkData = _dataGenerator.Generate(inPosition);
+        GameObject chunkView = _viewGenerator.Generate(chunkData);
+
+        Chunk newChunk = new Chunk(inPosition, chunkData, chunkView);
+
+        return newChunk;
     }
 
 
     class DataGenerator
     {
+        readonly NoiseGenerator   _noiseGenerator;
+        readonly TileMapGenerator _tileMapGenerator;
+
+
+        // Constructor
+        public DataGenerator(Noise.Parameters[] inNoiseParameters)
+        {
+            _noiseGenerator   = new NoiseGenerator(inNoiseParameters);
+            _tileMapGenerator = new TileMapGenerator();
+        }
+
+
+        public Chunk.Data Generate(Vector2DInt inPosition)
+        {
+            Chunk.Data newChunkData = new Chunk.Data();
+
+            // Use the NoiseGenerator and TileMapGenerator 
+
+            return newChunkData;
+        }
+
+
         class NoiseGenerator
         {
-            Noise.Parameters[] _noiseParamters;
-           
+            readonly Noise.Parameters[] _noiseParamters;
+
+
+            // Constructor
+            public NoiseGenerator(Noise.Parameters[] inNosieParameters)
+            {
+                _noiseParamters = inNosieParameters;
+            }
+
+
+            public Output Generate(Vector2DInt inOffset)
+            {
+                Output newOutput = new Output();
+
+                // Generate noisemap with the applied offset
+
+                return newOutput;
+            }
+
 
             public class Output
             {
@@ -31,33 +85,43 @@ public class ChunkGenerator : MonoBehaviour
 
         class TileMapGenerator
         {
+            public Output Generate(NoiseGenerator.Output inNoiseData)
+            {
+                Output newOutput = new Output();
 
-        }
+                // Generate Tilemap from noise data
 
+                return newOutput;
+            }
 
-        public class Output
-        {
-            Tile[] chunkTiles;
+            public class Output
+            {
+                Tile[,] tileMap;
+            }
         }
     }
 
 
     class ViewGenerator
     {
+        public GameObject Generate(Chunk.Data inChunkData)
+        {
+            GameObject newView = new GameObject();
+
+            // Use MeshGenerator and TextureGenerator to generate view
+
+            return newView;
+        }
+
+
         class MeshGenerator
         {
-
+            
         }
 
         class TextureGenerator
         {
 
-        }
-
-        
-        public class Output
-        {
-            public GameObject _chunkView;
         }
     }
 }
