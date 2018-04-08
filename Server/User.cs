@@ -22,24 +22,24 @@ public class User
 
     public class CreatureManager
     {
-        Dictionary<Creature, Vector2DInt[]> _creatures = new Dictionary<Creature, Vector2DInt[]>();
+        Dictionary<Creature, Vector2DInt[]> _chunksVisibleToCreatures = new Dictionary<Creature, Vector2DInt[]>();
 
         public void AddCreature(Creature inCreature)
         {
             // Recalculate creature visible chunks
             inCreature.movementComponent.OnChunkEnter += (Vector2DInt inNewChunkPosition) => {
-                _creatures[inCreature] = CalculateVisibleChunkPositions(inNewChunkPosition);
+                _chunksVisibleToCreatures[inCreature] = CalculateVisibleChunkPositions(inNewChunkPosition);
             };
 
             Vector2DInt[] visibleChunkPositions = CalculateVisibleChunkPositions(inCreature.movementComponent.currentPosition);
-            _creatures.Add(inCreature, visibleChunkPositions);
+            _chunksVisibleToCreatures.Add(inCreature, visibleChunkPositions);
         }
 
         public Creature[] GetCreatures() => 
-            _creatures.Keys.ToArray();
+            _chunksVisibleToCreatures.Keys.ToArray();
 
         public Vector2DInt[] GetVisibleChunkPositions(Creature inCreature) => 
-            _creatures[inCreature];
+            _chunksVisibleToCreatures[inCreature];
         
 
 
