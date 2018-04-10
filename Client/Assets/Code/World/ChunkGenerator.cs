@@ -49,7 +49,7 @@ public class ChunkGenerator
         {
             Chunk.Data newChunkData = new Chunk.Data();
 
-            // Use the NoiseGenerator and TileMapGenerator 
+            newChunkData.SetTiles(_tileMapGenerator.Generate(_noiseGenerator.Generate(inPosition)).tileMap);
 
             return newChunkData;
         }
@@ -71,7 +71,7 @@ public class ChunkGenerator
             {
                 Output newOutput = new Output();
 
-                // Generate noisemap with the applied offset
+                newOutput.heightMap = Noise.Generate((uint)_chunkSize, _noiseParamters[0], inOffset);
 
                 return newOutput;
             }
@@ -79,7 +79,7 @@ public class ChunkGenerator
 
             public class Output
             {
-                float[,] heightMap;
+                public float[,] heightMap;
             }
         }
 
@@ -96,7 +96,7 @@ public class ChunkGenerator
 
             public class Output
             {
-                Tile[,] tileMap;
+                public Tile[,] tileMap;
             }
         }
     }
