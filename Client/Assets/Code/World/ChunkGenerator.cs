@@ -49,7 +49,7 @@ public class ChunkGenerator
         {
             Chunk.Data newChunkData = new Chunk.Data();
 
-            newChunkData.SetTiles(_tileMapGenerator.Generate(_noiseGenerator.Generate(inPosition)).tileMap);
+            newChunkData.SetTiles(_tileMapGenerator.Generate(_noiseGenerator.Generate(inPosition)).tiles);
 
             return newChunkData;
         }
@@ -85,18 +85,20 @@ public class ChunkGenerator
 
         class TileMapGenerator
         {
-            public Output Generate(NoiseGenerator.Output inNoiseData)
+            public Output Generate(Vector2DInt inChunkPos, NoiseGenerator.Output inNoiseData)
             {
                 Output newOutput = new Output();
 
-                // Generate Tilemap from noise data
+                for (int y = 0; y < _chunkSize; y++)
+                    for (int x = 0; x < _chunkSize; x++)
+                        newOutput.tiles[x, y] = new Tile(new Vector2DInt(x, y), inChunkPos, new Terrain(TerrainGenerator.GetTerrainType(inNoiseData.heightMap[x, y])));
 
                 return newOutput;
             }
 
             public class Output
             {
-                public Tile[,] tileMap;
+                public Tile[,] tiles;
             }
         }
     }
@@ -104,13 +106,28 @@ public class ChunkGenerator
 
     class ViewGenerator
     {
-        public GameObject Generate(Chunk.Data inChunkData)
+        Material _chunkMaterial;
+
+        public ViewGenerator()
         {
-            GameObject newView = new GameObject();
+            _chunkMaterial = (Material)Resources.Load("Material_Chunk", typeof(Material));
+        }
 
-            // Use MeshGenerator and TextureGenerator to generate view
+        public GameObject Generate(Vector3 inPosition, Chunk.Data inChunkData)
+        {
+            GameObject   newChunkView = new GameObject("Chunk");
 
-            return newView;
+            MeshFilter   meshFilter   = newChunkView.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = newChunkView.AddComponent<MeshRenderer>();
+
+            meshRenderer.material = _chunkMaterial;
+
+            newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.z);
+
+            // Generate and apply mesh to GO
+            // Generate and apply texture to GO
+
+            return newChunkView;
         }
 
 
