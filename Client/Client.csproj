@@ -332,6 +332,7 @@
     <Compile Include="Assets\Shared\Libraries\Lidgren\Platform\PlatformWinRT.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Code\Shaders\Terrain.shader" />
     <None Include="Assets\Shared\Libraries\Lidgren\Documentation\ChangedFromV2.txt" />
     <None Include="Assets\Shared\Libraries\Lidgren\Documentation\Improvements.txt" />
     <None Include="Assets\Shared\Libraries\Lidgren\Documentation\PacketLayout.txt" />
