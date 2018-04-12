@@ -87,7 +87,7 @@ public class ChunkGenerator
         {
             public Output Generate(Vector2DInt inChunkPos, NoiseGenerator.Output inNoiseData)
             {
-                Output newOutput = new Output();
+                Output newOutput = new Output(_chunkSize);
 
                 for (int y = 0; y < _chunkSize; y++)
                     for (int x = 0; x < _chunkSize; x++)
@@ -99,6 +99,11 @@ public class ChunkGenerator
             public class Output
             {
                 public Tile[,] tiles;
+
+                public Output(  int inChunkSize)
+                {
+                    tiles = new Tile[inChunkSize, inChunkSize];
+                }
             }
         }
     }
@@ -114,6 +119,8 @@ public class ChunkGenerator
         public ViewGenerator()
         {
             _chunkMaterial = (Material)Resources.Load("Material_Chunk", typeof(Material));
+
+            _meshGenerator = new MeshGenerator();
         }
 
 
@@ -127,6 +134,7 @@ public class ChunkGenerator
             meshRenderer.material = _chunkMaterial;
 
             newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.y);
+
 
             MeshGenerator.Output meshData = _meshGenerator.Generate(inChunkData);
             ApplyMesh(meshFilter, meshData);
@@ -187,13 +195,13 @@ public class ChunkGenerator
                         int triangleOffset = currentQuad * 6;
                         int currentVertex = y * _vertexSize + x;
 
-                        _triangles[triangleOffset + 0] = currentVertex + 0;                 // Bottom - Left
-                        _triangles[triangleOffset + 1] = currentVertex + _vertexSize + 1;   // Top    - Right
-                        _triangles[triangleOffset + 2] = currentVertex + 1;                 // Bottom - Right
+                        triangles[triangleOffset + 0] = currentVertex + 0;                 // Bottom - Left
+                        triangles[triangleOffset + 1] = currentVertex + _vertexSize + 1;   // Top    - Right
+                        triangles[triangleOffset + 2] = currentVertex + 1;                 // Bottom - Right
 
-                        _triangles[triangleOffset + 3] = currentVertex + 0;                 // Bottom - Left
-                        _triangles[triangleOffset + 4] = currentVertex + _vertexSize + 0;   // Top    - Left
-                        _triangles[triangleOffset + 5] = currentVertex + _vertexSize + 1;   // Top    - Right
+                        triangles[triangleOffset + 3] = currentVertex + 0;                 // Bottom - Left
+                        triangles[triangleOffset + 4] = currentVertex + _vertexSize + 0;   // Top    - Left
+                        triangles[triangleOffset + 5] = currentVertex + _vertexSize + 1;   // Top    - Right
 
                         currentQuad++;
                     }
@@ -210,17 +218,17 @@ public class ChunkGenerator
                     for (int x = 0; x < _chunkSize; x++)
                     {
                         // Generate a quad 
-                        _vertices[vertexID + 0].x = x;
-                        _vertices[vertexID + 0].z = y;
+                        vertices[vertexID + 0].x = x;
+                        vertices[vertexID + 0].z = y;
 
-                        _vertices[vertexID + 1].x = x + 1;
-                        _vertices[vertexID + 1].z = y;
+                        vertices[vertexID + 1].x = x + 1;
+                        vertices[vertexID + 1].z = y;
 
-                        _vertices[vertexID + _vertexSize + 0].x = x;
-                        _vertices[vertexID + _vertexSize + 0].z = y + 1;
+                        vertices[vertexID + _vertexSize + 0].x = x;
+                        vertices[vertexID + _vertexSize + 0].z = y + 1;
 
-                        _vertices[vertexID + _vertexSize + 1].x = x + 1;
-                        _vertices[vertexID + _vertexSize + 1].z = y + 1;
+                        vertices[vertexID + _vertexSize + 1].x = x + 1;
+                        vertices[vertexID + _vertexSize + 1].z = y + 1;
 
                         vertexID += 2;
                     }
