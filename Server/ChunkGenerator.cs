@@ -10,11 +10,13 @@ public class ChunkGenerator
     NoiseGenerator _noiseGenerator;
     TileMapGenerator _tileMapGenerator;
 
+    static int _chunkSize;
+
 
     public ChunkGenerator(uint inChunkSize, Noise.Parameters[] inNoiseParameters)
     {
-        _noiseGenerator   = new NoiseGenerator(inChunkSize, inNoiseParameters);
-        _tileMapGenerator = new TileMapGenerator(inChunkSize);
+        _noiseGenerator   = new NoiseGenerator(inNoiseParameters);
+        _tileMapGenerator = new TileMapGenerator();
     }
 
 
@@ -33,19 +35,15 @@ public class ChunkGenerator
 
     class NoiseGenerator
     {
-        uint _noiseMapSize;
         Noise.Parameters[] _noiseParameters;
 
 
-        public NoiseGenerator(uint inChunkSize, Noise.Parameters[] inNoiseParameters)
-        {
-            _noiseMapSize = inChunkSize;
+        public NoiseGenerator(Noise.Parameters[] inNoiseParameters) =>
             _noiseParameters = inNoiseParameters;
-        }
 
 
         public Output Generate(Vector2DInt inChunkPosition) =>
-            new Output() { heightMap = Noise.Generate(_noiseMapSize, _noiseParameters[0], inChunkPosition) };
+            new Output() { heightMap = Noise.Generate((uint)_chunkSize, _noiseParameters[0], inChunkPosition) };
 
 
         public class Output
@@ -56,16 +54,9 @@ public class ChunkGenerator
 
     class TileMapGenerator
     {
-        uint _chunkSize;
-
-
-        public TileMapGenerator(uint inChunkSize) =>
-            _chunkSize = inChunkSize;
-
-
         public Output Generate(Vector2DInt inChunkPosition, NoiseGenerator.Output inNoiseData)
         {
-            Output newOutput = new Output(_chunkSize);
+            Output newOutput = new Output();
 
             for (int y = 0; y < _chunkSize; y++)
                 for (int x = 0; x < _chunkSize; x++)
@@ -81,8 +72,8 @@ public class ChunkGenerator
         {
             public Tile[,] tiles;
 
-            public Output(uint inChunkSize) =>
-                tiles = new Tile[inChunkSize, inChunkSize];
+            public Output() =>
+                tiles = new Tile[_chunkSize, _chunkSize];
         }
     }
 }
