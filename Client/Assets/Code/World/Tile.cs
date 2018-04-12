@@ -9,7 +9,7 @@ public class Tile
     public readonly Vector2DInt worldPosition;
 
     List<Creature> _characters = new List<Creature>();
-    Terrain _terrain;
+    public readonly Terrain terrain;
 
 
     public Tile(Vector2DInt inLocalPosition, Vector2DInt inChunkPosition, Terrain inTerrain)
@@ -18,7 +18,7 @@ public class Tile
         chunkPosition = inChunkPosition;
         worldPosition = localPosition + (chunkPosition * Constants.TerrainGeneration.CHUNK_SIZE);
 
-        _terrain = inTerrain;
+        terrain = inTerrain;
     }
 
 

@@ -23,7 +23,7 @@ public class ChunkGenerator
     public Chunk GenerateChunk(Vector2DInt inPosition)
     {
         Chunk.Data chunkData = _dataGenerator.Generate(inPosition);
-        GameObject chunkView = _viewGenerator.Generate(chunkData);
+        GameObject chunkView = _viewGenerator.Generate(inPosition, chunkData);
 
         Chunk newChunk = new Chunk(inPosition, chunkData, chunkView);
 
@@ -49,7 +49,7 @@ public class ChunkGenerator
         {
             Chunk.Data newChunkData = new Chunk.Data();
 
-            newChunkData.SetTiles(_tileMapGenerator.Generate(_noiseGenerator.Generate(inPosition)).tiles);
+            newChunkData.SetTiles(_tileMapGenerator.Generate(inPosition, _noiseGenerator.Generate(inPosition)).tiles);
 
             return newChunkData;
         }
@@ -106,14 +106,18 @@ public class ChunkGenerator
 
     class ViewGenerator
     {
+        readonly MeshGenerator _meshGenerator;
+
         Material _chunkMaterial;
+
 
         public ViewGenerator()
         {
             _chunkMaterial = (Material)Resources.Load("Material_Chunk", typeof(Material));
         }
 
-        public GameObject Generate(Vector3 inPosition, Chunk.Data inChunkData)
+
+        public GameObject Generate(Vector2DInt inPosition, Chunk.Data inChunkData)
         {
             GameObject   newChunkView = new GameObject("Chunk");
 
@@ -122,23 +126,151 @@ public class ChunkGenerator
 
             meshRenderer.material = _chunkMaterial;
 
-            newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.z);
+            newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.y);
 
-            // Generate and apply mesh to GO
-            // Generate and apply texture to GO
+            MeshGenerator.Output meshData = _meshGenerator.Generate(inChunkData);
+            ApplyMesh(meshFilter, meshData);
 
             return newChunkView;
         }
 
 
-        class MeshGenerator
+        void ApplyMesh(MeshFilter inFilter, MeshGenerator.Output inMeshData)
         {
-            
+            inFilter.mesh.vertices  = inMeshData.vertices;
+            inFilter.mesh.triangles = inMeshData.triangles;
+            inFilter.mesh.uv2       = inMeshData.uv2;
         }
 
-        class TextureGenerator
-        {
 
+        class MeshGenerator
+        {
+            readonly int _vertexSize;
+            readonly int _vertexCount;
+
+            readonly int[]     _triangles;
+            readonly Vector3[] _vertices;
+
+
+            // Constructor
+            public MeshGenerator()
+            {
+                // Calculate sizes and counts
+                _vertexSize = _chunkSize * 2;
+                _vertexCount = _vertexSize * _vertexSize * 4;
+
+                // Generate vertices
+                _vertices = GenerateVertices();
+
+                // Generate triangle ID's
+                _triangles = GenerateTriangleIDs();
+            }
+
+
+            public Output Generate(Chunk.Data inChunkData)
+            {
+                Output newOutput = new Output(_vertices, _triangles);
+
+                newOutput.uv2 = GenerateUV2(inChunkData);
+
+                return newOutput;
+            }
+
+
+            int[] GenerateTriangleIDs()
+            {
+                int[] triangles = new int[_chunkSize * _chunkSize * 6];
+                int currentQuad = 0;
+                for (int y = 0; y < _vertexSize; y += 2)
+                    for (int x = 0; x < _vertexSize; x += 2)
+                    {
+                        int triangleOffset = currentQuad * 6;
+                        int currentVertex = y * _vertexSize + x;
+
+                        _triangles[triangleOffset + 0] = currentVertex + 0;                 // Bottom - Left
+                        _triangles[triangleOffset + 1] = currentVertex + _vertexSize + 1;   // Top    - Right
+                        _triangles[triangleOffset + 2] = currentVertex + 1;                 // Bottom - Right
+
+                        _triangles[triangleOffset + 3] = currentVertex + 0;                 // Bottom - Left
+                        _triangles[triangleOffset + 4] = currentVertex + _vertexSize + 0;   // Top    - Left
+                        _triangles[triangleOffset + 5] = currentVertex + _vertexSize + 1;   // Top    - Right
+
+                        currentQuad++;
+                    }
+
+                return triangles;
+            }
+
+            Vector3[] GenerateVertices()
+            {
+                Vector3[] vertices = new Vector3[_vertexCount];
+                int vertexID = 0;
+                for (int y = 0; y < _chunkSize; y++)
+                {
+                    for (int x = 0; x < _chunkSize; x++)
+                    {
+                        // Generate a quad 
+                        _vertices[vertexID + 0].x = x;
+                        _vertices[vertexID + 0].z = y;
+
+                        _vertices[vertexID + 1].x = x + 1;
+                        _vertices[vertexID + 1].z = y;
+
+                        _vertices[vertexID + _vertexSize + 0].x = x;
+                        _vertices[vertexID + _vertexSize + 0].z = y + 1;
+
+                        _vertices[vertexID + _vertexSize + 1].x = x + 1;
+                        _vertices[vertexID + _vertexSize + 1].z = y + 1;
+
+                        vertexID += 2;
+                    }
+                    vertexID += _vertexSize;
+                }
+
+                return vertices;
+            }
+
+            Vector2[] GenerateUV2(Chunk.Data inChunkData)
+            {
+                Vector2[] newUV2s = new Vector2[_vertexCount];
+                int vertexID = 0;
+                for (int y = 0; y < _chunkSize; y++)
+                {
+                    for (int x = 0; x < _chunkSize; x++)
+                    {
+
+                        int tileTextureID = inChunkData.GetTile(new Vector2DInt(x, y)).terrain.data.textureID;
+
+                        newUV2s[vertexID + 0] = new Vector2(tileTextureID, tileTextureID);
+                        newUV2s[vertexID + 1] = new Vector2(tileTextureID, tileTextureID);
+                        newUV2s[vertexID + _vertexSize + 0] = new Vector2(tileTextureID, tileTextureID);
+                        newUV2s[vertexID + _vertexSize + 1] = new Vector2(tileTextureID, tileTextureID);
+
+                        vertexID += 2;
+                    }
+                    vertexID += _vertexSize;
+                }
+
+                return newUV2s;
+            }
+
+
+            public class Output
+            {
+                // Cached data
+                readonly public Vector3[] vertices;
+                readonly public int[] triangles;
+
+                // Data
+                public Vector2[] uv2;
+
+                // Constructor
+                public Output(Vector3[] inVertices, int[] inTriangles)
+                {
+                    vertices = inVertices;
+                    triangles = inTriangles;
+                }
+            }
         }
     }
 }
