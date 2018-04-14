@@ -14,7 +14,7 @@ public class User
 
     public User(NetConnection inConnection)
     {
-        creatureManager = new CreatureManager();
+        creatureManager = new CreatureManager(this);
 
         connection = inConnection;
     }
@@ -22,6 +22,12 @@ public class User
 
     public class CreatureManager
     {
+        readonly User _user;
+
+        public CreatureManager(User inUser) => 
+            _user = inUser;
+
+
         Dictionary<Creature, Vector2DInt[]> _chunksVisibleToCreatures = new Dictionary<Creature, Vector2DInt[]>();
 
         public void AddCreature(Creature inCreature)
@@ -33,6 +39,11 @@ public class User
 
             Vector2DInt[] visibleChunkPositions = CalculateVisibleChunkPositions(inCreature.movementComponent.currentPosition);
             _chunksVisibleToCreatures.Add(inCreature, visibleChunkPositions);
+
+            new Command.Client.SendVisibleChunks(new Command.Client.SendVisibleChunks.Data()
+            {
+                visibleChunkPositions = visibleChunkPositions,
+            }).Send(NetworkManager.instance.server, _user.connection);
         }
 
         public Creature[] GetCreatures() => 

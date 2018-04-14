@@ -140,6 +140,67 @@ public abstract partial class Command
                     creatureGuid = creatureGuid.UnpackFrom(inMsg);
             }
         }
+
+        public partial class SendVisibleChunks : Command
+        {
+            public readonly Data data = new Data();
+
+            public override Type type => Type.SendVisibleChunks;
+            public override IPackable dataAsPacket => data;
+
+
+            public SendVisibleChunks() { }
+            public SendVisibleChunks(Data inData)
+            {
+                data = inData;
+            }
+
+
+            public class Data : IPackable
+            {
+                public Vector2DInt[] visibleChunkPositions;
+
+                public int GetPacketSize()
+                {
+                    int numBits = 0;
+                    foreach (Vector2DInt chunkPosition in visibleChunkPositions)
+                        numBits += chunkPosition.GetPacketSize();
+
+                    return numBits;
+                }
+
+                public void PackInto(NetOutgoingMessage inMsg)
+                {
+                    inMsg.WriteVariableInt32(visibleChunkPositions.Length);
+
+                    foreach (Vector2DInt chunkPosition in visibleChunkPositions)
+                        chunkPosition.PackInto(inMsg);
+                }
+
+                public void UnpackFrom(NetIncomingMessage inMsg)
+                {
+                    visibleChunkPositions = new Vector2DInt[inMsg.ReadVariableInt32()];
+
+                    foreach (Vector2DInt chunkPosition in visibleChunkPositions)
+                        chunkPosition.UnpackFrom(inMsg);
+                }
+            }
+        }
+
+        public partial class SendWorldGenData
+        {
+
+        }
+
+        public partial class CreateCreature
+        {
+
+        }
+
+        public partial class MoveCreature
+        {
+
+        }
     }
 
     public enum Type
@@ -149,6 +210,7 @@ public abstract partial class Command
         UserLogin,
 
         // ServerToClient
-        SendPlayerData
+        SendPlayerData,
+        SendVisibleChunks,
     }
 }

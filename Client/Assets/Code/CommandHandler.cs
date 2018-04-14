@@ -30,5 +30,18 @@ public partial class Command
                 Debug.Log("Player creature recieved");
             }
         }
+
+        public partial class SendVisibleChunks
+        {
+            public override void RecieveAndExecute(NetIncomingMessage inMsg)
+            {
+                dataAsPacket.UnpackFrom(inMsg);
+
+                foreach (var item in data.visibleChunkPositions)
+                {
+                    Debug.Log(item.ToString());
+                }
+            }
+        }
     }
 }
