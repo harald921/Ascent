@@ -13,8 +13,10 @@ public class ChunkGenerator
     static int _chunkSize;
 
 
-    public ChunkGenerator(uint inChunkSize, Noise.Parameters[] inNoiseParameters)
+    public ChunkGenerator(int inChunkSize, Noise.Parameters[] inNoiseParameters)
     {
+        _chunkSize = inChunkSize;
+
         _noiseGenerator   = new NoiseGenerator(inNoiseParameters);
         _tileMapGenerator = new TileMapGenerator();
     }

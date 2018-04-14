@@ -8,6 +8,7 @@ public class CommandHandler
     static Dictionary<Command.Type, Command> _clientCommands = new Dictionary<Command.Type, Command>()
     {
         { Command.Type.SendPlayerData, new Command.Client.SendPlayerData() },
+        { Command.Type.SendVisibleChunks, new Command.Client.SendVisibleChunks() }
     };
 
     public static void ProcessCommand(NetIncomingMessage inMsg)

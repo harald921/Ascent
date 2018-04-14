@@ -133,8 +133,6 @@ public class ChunkGenerator
 
             meshRenderer.material = _chunkMaterial;
 
-            Debug.Log(_chunkMaterial);
-
             newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.y);
 
 
