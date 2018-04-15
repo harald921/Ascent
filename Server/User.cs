@@ -33,14 +33,19 @@ public class User
         public void AddCreature(Creature inCreature)
         {
             // Recalculate creature visible chunks
-            inCreature.movementComponent.OnChunkEnter += (Vector2DInt inNewChunkPosition) => {
+            inCreature.movementComponent.OnChunkEnter += (Vector2DInt inNewChunkPosition) => 
+            {
                 _chunksVisibleToCreatures[inCreature] = CalculateVisibleChunkPositions(inNewChunkPosition);
+
+                new Command.Client.SendVisibleChunks(new Command.Client.SendVisibleChunks.Data()
+                {
+                    creatureGuid = inCreature.guid,
+                    visibleChunkPositions = _chunksVisibleToCreatures[inCreature],
+                }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
             };
 
             Vector2DInt[] visibleChunkPositions = CalculateVisibleChunkPositions(inCreature.movementComponent.currentPosition);
             _chunksVisibleToCreatures.Add(inCreature, visibleChunkPositions);
-
-            Console.WriteLine(inCreature.guid.ToString());
 
             new Command.Client.GiveCreatureOwnership(new Command.Client.GiveCreatureOwnership.Data()
             {
