@@ -187,15 +187,10 @@ public abstract partial class Command
                     creatureGuid = creatureGuid.UnpackFrom(inMsg);
 
                     visibleChunkPositions = new Vector2DInt[inMsg.ReadVariableInt32()];
-                    foreach (Vector2DInt chunkPosition in visibleChunkPositions)
-                        chunkPosition.UnpackFrom(inMsg);
+                    for (int i = 0; i < visibleChunkPositions.Length; i++)
+                        visibleChunkPositions[i].UnpackFrom(inMsg);
                 }
             }
-        }
-
-        public partial class SendWorldGenData
-        {
-
         }
 
         public partial class CreateCreature

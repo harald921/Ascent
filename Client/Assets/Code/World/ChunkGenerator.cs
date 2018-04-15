@@ -133,7 +133,7 @@ public class ChunkGenerator
 
             meshRenderer.material = _chunkMaterial;
 
-            newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.y);
+            newChunkView.transform.position = new Vector3(inPosition.x, 0, inPosition.y) * Constants.TerrainGeneration.CHUNK_SIZE;
 
 
             MeshGenerator.Output meshData = _meshGenerator.Generate(inChunkData);

@@ -39,6 +39,8 @@ public partial class Command
             {
                 dataAsPacket.UnpackFrom(inMsg);
 
+
+
                 Program.user.UpdateVisibleChunks(data.creatureGuid, data.visibleChunkPositions);
             }
         }

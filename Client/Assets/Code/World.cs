@@ -17,4 +17,9 @@ public partial class World : MonoBehaviour
         chunkManager    = new ChunkManager();
         creatureManager = new CreatureManager();
     }
+
+    public void Update()
+    {
+        chunkManager.ManualUpdate();
+    }
 }
