@@ -5,13 +5,15 @@ using Lidgren.Network;
 
 public class Program : MonoBehaviour
 {
-    static public System.Guid playerCreature;
+    static public User user;
 
     NetworkManager _networkManager;
 
     void Awake()
     {
         _networkManager = new NetworkManager();
+
+        user = new User();
     }
 
     void Update()
@@ -34,7 +36,6 @@ public class Program : MonoBehaviour
             Debug.Log(moveDirection.x + ", " + moveDirection.y);
             new Command.Server.MovePlayer(new Command.Server.MovePlayer.Data()
             {
-                creatureGuid = playerCreature,
                 direction = moveDirection
             }).Send(_networkManager.client, _networkManager.client.ServerConnection);
         }

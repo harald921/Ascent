@@ -40,10 +40,18 @@ public class User
             Vector2DInt[] visibleChunkPositions = CalculateVisibleChunkPositions(inCreature.movementComponent.currentPosition);
             _chunksVisibleToCreatures.Add(inCreature, visibleChunkPositions);
 
+            Console.WriteLine(inCreature.guid.ToString());
+
+            new Command.Client.GiveCreatureOwnership(new Command.Client.GiveCreatureOwnership.Data()
+            {
+                creatureGuid = inCreature.guid,
+            }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
+
             new Command.Client.SendVisibleChunks(new Command.Client.SendVisibleChunks.Data()
             {
+                creatureGuid = inCreature.guid,
                 visibleChunkPositions = visibleChunkPositions,
-            }).Send(NetworkManager.instance.server, _user.connection);
+            }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
         }
 
         public Creature[] GetCreatures() => 

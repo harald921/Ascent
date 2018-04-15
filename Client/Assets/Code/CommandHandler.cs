@@ -7,7 +7,7 @@ public class CommandHandler
 {
     static Dictionary<Command.Type, Command> _clientCommands = new Dictionary<Command.Type, Command>()
     {
-        { Command.Type.SendPlayerData, new Command.Client.SendPlayerData() },
+        { Command.Type.GiveCreatureOwnership, new Command.Client.GiveCreatureOwnership() },
         { Command.Type.SendVisibleChunks, new Command.Client.SendVisibleChunks() }
     };
 
@@ -22,15 +22,16 @@ public partial class Command
 {
     public partial class Client
     {
-        public partial class SendPlayerData
+        public partial class GiveCreatureOwnership
         {
             public override void RecieveAndExecute(NetIncomingMessage inMsg)
             {
                 dataAsPacket.UnpackFrom(inMsg);
-                Program.playerCreature = data.creatureGuid;
-                Debug.Log("Player creature recieved");
+
+                Program.user.ownedCreatureID = data.creatureGuid;
             }
         }
+
 
         public partial class SendVisibleChunks
         {
@@ -38,10 +39,7 @@ public partial class Command
             {
                 dataAsPacket.UnpackFrom(inMsg);
 
-                foreach (var item in data.visibleChunkPositions)
-                {
-                    Debug.Log(item.ToString());
-                }
+                Program.user.UpdateVisibleChunks(data.creatureGuid, data.visibleChunkPositions);
             }
         }
     }

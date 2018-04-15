@@ -21,12 +21,6 @@ partial class World
                 Creature newCreature = SpawnCreature(Species.Type.Human, spawnTile);
 
                 inUser.creatureManager.AddCreature(newCreature);
-
-                // Send the id of the creature to the fresh client
-                new Command.Client.SendPlayerData(new Command.Client.SendPlayerData.Data()
-                {
-                    creatureGuid = newCreature.guid
-                }).Send(NetworkManager.instance.server, inUser.connection);
             };
         }
 
