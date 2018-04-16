@@ -33,7 +33,7 @@ partial class World
                 Vector2DInt[] visibleChunksPositions = Program.user.GetAllVisibleChunkPositions();
 
                 _chunksToDelete.Clear();
-                _chunksToDelete.AddRange(visibleChunksPositions);
+                _chunksToDelete.AddRange(_chunks.Keys);
 
                 // Queue up coords to generate chunks on
                 for (int i = 0; i < visibleChunksPositions.Length; i++)
@@ -43,7 +43,7 @@ partial class World
                         _chunksToGenerate.Add(visibleChunksPositions[i]);
 
                     // If chunksToDelete contains the visible chunk position, remove it from chunksToDelete
-                    if (_chunksToDelete.Contains(visibleChunksPositions[i]))
+                    else if (_chunksToDelete.Contains(visibleChunksPositions[i]))
                         _chunksToDelete.Remove(visibleChunksPositions[i]);
                 }
             };
@@ -55,6 +55,9 @@ partial class World
             while (_chunksToDelete.Count > 0)
             {
                 Destroy(_chunks[_chunksToDelete[0]].viewGO);
+
+                _chunks.Remove(_chunksToDelete[0]);
+
                 _chunksToDelete.RemoveAt(0);
             }
 

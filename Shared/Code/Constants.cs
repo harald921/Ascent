@@ -30,6 +30,6 @@
 
     public static class TerrainGeneration
     {
-        public const int CHUNK_SIZE = 64;
+        public const int CHUNK_SIZE = 16;
     }
 }
