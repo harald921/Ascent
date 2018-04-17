@@ -8,7 +8,8 @@ public class CommandHandler
     static Dictionary<Command.Type, Command> _clientCommands = new Dictionary<Command.Type, Command>()
     {
         { Command.Type.GiveCreatureOwnership, new Command.Client.GiveCreatureOwnership() },
-        { Command.Type.SendVisibleChunks, new Command.Client.SendVisibleChunks() }
+        { Command.Type.SendVisibleChunks,     new Command.Client.SendVisibleChunks()     },
+        { Command.Type.CreateCreature,        new Command.Client.CreateCreature()        }
     };
 
     public static void ProcessCommand(NetIncomingMessage inMsg)
@@ -32,7 +33,6 @@ public partial class Command
             }
         }
 
-
         public partial class SendVisibleChunks
         {
             public override void RecieveAndExecute(NetIncomingMessage inMsg)
@@ -40,6 +40,16 @@ public partial class Command
                 dataAsPacket.UnpackFrom(inMsg);
 
                 Program.user.UpdateVisibleChunks(data.creatureGuid, data.visibleChunkPositions);
+            }
+        }
+
+        public partial class CreateCreature
+        {
+            public override void RecieveAndExecute(NetIncomingMessage inMsg)
+            {
+                dataAsPacket.UnpackFrom(inMsg);
+
+                World.instance.creatureManager.SpawnCreature(data.creatureGuid, World.instance.chunkManager.GetTile(data.spawnWorldPosition));
             }
         }
     }

@@ -23,8 +23,6 @@ public class User
         Vector2DInt[] visiblePositions = new Vector2DInt[visibleChunkPositions.Count];
         visibleChunkPositions.CopyTo(visiblePositions);
 
-        Debug.Log("Num visible positions: " + visiblePositions.Length);
-
         return visiblePositions;
     }
 

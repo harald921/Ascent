@@ -68,8 +68,6 @@ partial class World
             {
                 Vector2DInt newChunkPosition = _chunksToGenerate[0];
 
-                Debug.Log(newChunkPosition);
-
                 _chunks.Add(newChunkPosition, chunkGenerator.GenerateChunk(newChunkPosition));
 
                 _chunksToGenerate.RemoveAt(0); 

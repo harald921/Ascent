@@ -24,46 +24,56 @@ public class User
     {
         readonly User _user;
 
+        Dictionary<Creature, Vector2DInt[]> _chunkPositionsVisibleToCreatures = new Dictionary<Creature, Vector2DInt[]>();
+
+
         public CreatureManager(User inUser) => 
             _user = inUser;
 
 
-        Dictionary<Creature, Vector2DInt[]> _chunksVisibleToCreatures = new Dictionary<Creature, Vector2DInt[]>();
-
         public void AddCreature(Creature inCreature)
         {
             // Recalculate creature visible chunks
-            inCreature.movementComponent.OnChunkEnter += (Vector2DInt inNewChunkPosition) => 
-            {
-                _chunksVisibleToCreatures[inCreature] = CalculateVisibleChunkPositions(inNewChunkPosition);
-
-                new Command.Client.SendVisibleChunks(new Command.Client.SendVisibleChunks.Data()
-                {
-                    creatureGuid = inCreature.guid,
-                    visibleChunkPositions = _chunksVisibleToCreatures[inCreature],
-                }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
-            };
-
             Vector2DInt[] visibleChunkPositions = CalculateVisibleChunkPositions(inCreature.movementComponent.currentPosition);
-            _chunksVisibleToCreatures.Add(inCreature, visibleChunkPositions);
+            _chunkPositionsVisibleToCreatures.Add(inCreature, visibleChunkPositions);
 
+            // Give ownership of the creature to the user
             new Command.Client.GiveCreatureOwnership(new Command.Client.GiveCreatureOwnership.Data()
             {
                 creatureGuid = inCreature.guid,
             }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
 
+            new Command.Client.CreateCreature(new Command.Client.CreateCreature.Data()
+            {
+                creatureGuid = inCreature.guid,
+                spawnWorldPosition = inCreature.movementComponent.currentPosition
+            }).Send(NetworkManager.instance.server, _user.connection);
+
+            // Send the chunks visible to this creature to the user
             new Command.Client.SendVisibleChunks(new Command.Client.SendVisibleChunks.Data()
             {
                 creatureGuid = inCreature.guid,
                 visibleChunkPositions = visibleChunkPositions,
             }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
+
+            // Make the creature send what chunks it can see every time it enters a new chunk
+            inCreature.movementComponent.OnChunkEnter += (Vector2DInt inNewChunkPosition) => 
+            {
+                _chunkPositionsVisibleToCreatures[inCreature] = CalculateVisibleChunkPositions(inNewChunkPosition);
+
+                new Command.Client.SendVisibleChunks(new Command.Client.SendVisibleChunks.Data()
+                {
+                    creatureGuid = inCreature.guid,
+                    visibleChunkPositions = _chunkPositionsVisibleToCreatures[inCreature],
+                }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
+            };
         }
 
         public Creature[] GetCreatures() => 
-            _chunksVisibleToCreatures.Keys.ToArray();
+            _chunkPositionsVisibleToCreatures.Keys.ToArray();
 
         public Vector2DInt[] GetVisibleChunkPositions(Creature inCreature) => 
-            _chunksVisibleToCreatures[inCreature];
+            _chunkPositionsVisibleToCreatures[inCreature];
         
 
 

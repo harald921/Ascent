@@ -23,4 +23,9 @@ public static class SystemGuidExtensions
 
         return new Guid(guidBytes);
     }
+
+    public static void AddTo(this int inInt, int inAmountToAdd)
+    {
+        inInt += inAmountToAdd;
+    }
 }

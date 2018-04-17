@@ -193,9 +193,42 @@ public abstract partial class Command
             }
         }
 
-        public partial class CreateCreature
+        public partial class CreateCreature : Command
         {
+            public readonly Data data = new Data();
 
+            public override Type type => Type.CreateCreature;
+            public override IPackable dataAsPacket => data;
+
+
+            public CreateCreature() { }
+            public CreateCreature(Data inData)
+            {
+                data = inData;
+            }
+
+
+            public class Data : IPackable
+            {
+                public Guid creatureGuid;
+                public Vector2DInt spawnWorldPosition;
+
+                public int GetPacketSize() =>
+                    creatureGuid.GetPacketSize() + 
+                    spawnWorldPosition.GetPacketSize();
+
+                public void PackInto(NetOutgoingMessage inMsg)
+                {
+                    creatureGuid.PackInto(inMsg);
+                    spawnWorldPosition.PackInto(inMsg);
+                }
+
+                public void UnpackFrom(NetIncomingMessage inMsg)
+                {
+                    creatureGuid = creatureGuid.UnpackFrom(inMsg);
+                    spawnWorldPosition.UnpackFrom(inMsg);
+                }
+            }
         }
 
         public partial class MoveCreature
@@ -213,5 +246,41 @@ public abstract partial class Command
         // ServerToClient
         GiveCreatureOwnership,
         SendVisibleChunks,
+        CreateCreature,
+        MoveCreature
     }
 }
+
+/*
+public partial class MyCommand : Command
+{
+    public readonly Data data = new Data();
+
+    public override Type type => Type.;
+    public override IPackable dataAsPacket => data;
+
+
+    public MyCommand() { }
+    public MyCommand(Data inData)
+    {
+        data = inData;
+    }
+
+
+    public class Data : IPackable
+    {
+        
+        public int GetPacketSize()
+        {
+        }
+
+        public void PackInto(NetOutgoingMessage inMsg)
+        {
+        }
+
+        public void UnpackFrom(NetIncomingMessage inMsg)
+        {
+        }
+    }
+}
+*/
