@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class User
 {
-    public Guid ownedCreatureID;
+    public List<Guid> ownedCreatureID = new List<Guid>();
 
     public event Action OnVisibleChunksChange;
 
@@ -14,12 +14,18 @@ public class User
 
     public Vector2DInt[] GetAllVisibleChunkPositions()
     {
-        List<Vector2DInt> visibleChunkPositions = new List<Vector2DInt>();
+        HashSet<Vector2DInt> visibleChunkPositions = new HashSet<Vector2DInt>();
 
         foreach (KeyValuePair<Guid, Vector2DInt[]> item in _chunksVisibleToCreatures)
-            visibleChunkPositions.AddRange(item.Value);
+            foreach (Vector2DInt visiblePosition in item.Value)
+                visibleChunkPositions.Add(visiblePosition);
 
-        return visibleChunkPositions.ToArray();
+        Vector2DInt[] visiblePositions = new Vector2DInt[visibleChunkPositions.Count];
+        visibleChunkPositions.CopyTo(visiblePositions);
+
+        Debug.Log("Num visible positions: " + visiblePositions.Length);
+
+        return visiblePositions;
     }
 
     public void UpdateVisibleChunks(Guid inTargetCreatureGuid, Vector2DInt[] inNewVisibleChunks)

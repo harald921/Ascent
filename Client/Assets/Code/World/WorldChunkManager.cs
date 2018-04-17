@@ -40,7 +40,10 @@ partial class World
                 {
                     // If chunks doesn't contain the visible chunk position, add it to the generate queue
                     if (!_chunks.ContainsKey(visibleChunksPositions[i]))
-                        _chunksToGenerate.Add(visibleChunksPositions[i]);
+                    {
+                        if (!_chunksToGenerate.Contains(visibleChunksPositions[i]))
+                            _chunksToGenerate.Add(visibleChunksPositions[i]);
+                    }
 
                     // If chunksToDelete contains the visible chunk position, remove it from chunksToDelete
                     else if (_chunksToDelete.Contains(visibleChunksPositions[i]))

@@ -18,9 +18,12 @@ partial class World
             {
                 // TODO: Make it read from disk when Users are permanent
                 Tile spawnTile = instance.chunkManager.GetChunk(Vector2DInt.Zero).GetTile(Vector2DInt.Zero);
-                Creature newCreature = SpawnCreature(Species.Type.Human, spawnTile);
 
-                inUser.creatureManager.AddCreature(newCreature);
+                for (int i = 0; i < 2; i++)
+                {
+                    Creature newCreature = SpawnCreature(Species.Type.Human, spawnTile);
+                    inUser.creatureManager.AddCreature(newCreature);
+                }
             };
         }
 

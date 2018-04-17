@@ -28,7 +28,7 @@ public partial class Command
             {
                 dataAsPacket.UnpackFrom(inMsg);
 
-                Program.user.ownedCreatureID = data.creatureGuid;
+                Program.user.ownedCreatureID.Add(data.creatureGuid);
             }
         }
 
@@ -38,8 +38,6 @@ public partial class Command
             public override void RecieveAndExecute(NetIncomingMessage inMsg)
             {
                 dataAsPacket.UnpackFrom(inMsg);
-
-
 
                 Program.user.UpdateVisibleChunks(data.creatureGuid, data.visibleChunkPositions);
             }
