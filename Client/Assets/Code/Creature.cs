@@ -12,6 +12,7 @@ public class Creature
 
     public Creature(Guid inGuid, GameObject inViewGO)
     {
+        guid = inGuid;
         viewGO = inViewGO;
     }
 }

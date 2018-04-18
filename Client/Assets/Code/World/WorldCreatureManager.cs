@@ -13,13 +13,15 @@ partial class World
             _creatures[inGuid];
 
 
-        public Creature SpawnCreature(Guid inGuid, Tile inSpawnTile)
+        public Creature SpawnCreature(Guid inGuid, Vector2DInt inSpawnWorldPosition)
         {
             GameObject debugCreatureView = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
             Creature newCreature = new Creature(inGuid, debugCreatureView);
 
             _creatures.Add(newCreature.guid, newCreature);
+
+            newCreature.viewGO.transform.position = new Vector3(inSpawnWorldPosition.x, 0, inSpawnWorldPosition.y) + Vector3.one * 0.5f;
 
             return newCreature;
         }

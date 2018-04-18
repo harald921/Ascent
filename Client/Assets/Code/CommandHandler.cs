@@ -49,7 +49,7 @@ public partial class Command
             {
                 dataAsPacket.UnpackFrom(inMsg);
 
-                World.instance.creatureManager.SpawnCreature(data.creatureGuid, World.instance.chunkManager.GetTile(data.spawnWorldPosition));
+                World.instance.creatureManager.SpawnCreature(data.creatureGuid, data.spawnWorldPosition);
             }
         }
     }
