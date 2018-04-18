@@ -32,6 +32,12 @@ public partial class Command
                 dataAsPacket.UnpackFrom(inMsg);
 
                 World.instance.creatureManager.GetCreature(data.creatureGuid).movementComponent.MoveInDirection(data.direction);
+
+                new Client.MoveCreature(new Client.MoveCreature.Data()
+                {
+                    creatureGuid = data.creatureGuid,
+                    moveDirection = data.direction,
+                }).Send(NetworkManager.instance.server, inMsg.SenderConnection);
             }
         }
     }

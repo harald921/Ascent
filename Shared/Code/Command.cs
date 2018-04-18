@@ -231,9 +231,42 @@ public abstract partial class Command
             }
         }
 
-        public partial class MoveCreature
+        public partial class MoveCreature : Command
         {
+            public readonly Data data = new Data();
 
+            public override Type type => Type.MoveCreature;
+            public override IPackable dataAsPacket => data;
+
+
+            public MoveCreature() { }
+            public MoveCreature(Data inData)
+            {
+                data = inData;
+            }
+
+
+            public class Data : IPackable
+            {
+                public Guid creatureGuid;
+                public Vector2DInt moveDirection;
+
+                public int GetPacketSize() =>
+                    creatureGuid.GetPacketSize() +
+                    moveDirection.GetPacketSize();
+
+                public void PackInto(NetOutgoingMessage inMsg)
+                {
+                    creatureGuid.PackInto(inMsg);
+                    moveDirection.PackInto(inMsg);
+                }
+
+                public void UnpackFrom(NetIncomingMessage inMsg)
+                {
+                    creatureGuid = creatureGuid.UnpackFrom(inMsg);
+                    moveDirection.UnpackFrom(inMsg);
+                }
+            }
         }
     }
 

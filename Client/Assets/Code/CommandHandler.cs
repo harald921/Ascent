@@ -9,7 +9,8 @@ public class CommandHandler
     {
         { Command.Type.GiveCreatureOwnership, new Command.Client.GiveCreatureOwnership() },
         { Command.Type.SendVisibleChunks,     new Command.Client.SendVisibleChunks()     },
-        { Command.Type.CreateCreature,        new Command.Client.CreateCreature()        }
+        { Command.Type.CreateCreature,        new Command.Client.CreateCreature()        },
+        { Command.Type.MoveCreature,          new Command.Client.MoveCreature()          }
     };
 
     public static void ProcessCommand(NetIncomingMessage inMsg)
@@ -50,6 +51,16 @@ public partial class Command
                 dataAsPacket.UnpackFrom(inMsg);
 
                 World.instance.creatureManager.SpawnCreature(data.creatureGuid, data.spawnWorldPosition);
+            }
+        }
+
+        public partial class MoveCreature
+        {
+            public override void RecieveAndExecute(NetIncomingMessage inMsg)
+            {
+                dataAsPacket.UnpackFrom(inMsg);
+
+                World.instance.creatureManager.GetCreature(data.creatureGuid).viewGO.transform.position += new Vector3(data.moveDirection.x, 0, data.moveDirection.y);
             }
         }
     }
