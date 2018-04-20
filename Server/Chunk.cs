@@ -9,6 +9,7 @@ public class Chunk
 {
     public readonly Vector2DInt position;
 
+    List<User> _witnesses = new List<User>();
     Tile[,] _tiles;
 
 
@@ -18,6 +19,11 @@ public class Chunk
         Console.WriteLine("New Chunk at: " + position.x + "," + position.y);
     }
 
+    public void AddWitness(User inUser) =>
+        _witnesses.Add(inUser);
+
+    public void RemoveWitness(User inUser) =>
+        _witnesses.Remove(inUser);
 
     public Tile GetTile(Vector2DInt inTileCoords) =>
         _tiles[inTileCoords.x, inTileCoords.y];

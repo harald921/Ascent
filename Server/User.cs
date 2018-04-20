@@ -67,6 +67,9 @@ public class User
                     visibleChunkPositions = _chunkPositionsVisibleToCreatures[inCreature],
                 }).Send(NetworkManager.instance.server, _user.connection, NetDeliveryMethod.ReliableOrdered);
             };
+
+            inCreature.movementComponent.OnChunkEnter += AddWitnessToVisibleChunks;
+
         }
 
         public Creature[] GetCreatures() => 
@@ -90,6 +93,29 @@ public class User
                                                                             y - chunksToSide + inViewOrigin.y);
 
             return visibleChunks;
+        }
+
+        void AddWitnessToVisibleChunks(Vector2DInt inNewChunkPosition)
+        {
+            Vector2DInt[] visibleChunksPositions = CalculateVisibleChunkPositions(inNewChunkPosition);
+
+            foreach (Vector2DInt visibleChunkPos in visibleChunksPositions)
+                World.instance.chunkManager.GetChunk(visibleChunkPos).AddWitness(_user);
+        }
+
+        void RemoveWitnessFromLeftChunks(Vector2DInt inOldChunkPosition, Vector2DInt inNewChunkPosition)
+        {
+            Vector2DInt[] oldVisibleChunkPositions = CalculateVisibleChunkPositions(inOldChunkPosition);
+            Vector2DInt[] newVisibleChunkPositions = CalculateVisibleChunkPositions(inNewChunkPosition);
+
+            List<Vector2DInt> lostVisibleChunkPositions = new List<Vector2DInt>();
+
+            foreach (Vector2DInt oldVisibleChunkPosition in oldVisibleChunkPositions)
+                if (!newVisibleChunkPositions.Contains(oldVisibleChunkPosition))
+                    lostVisibleChunkPositions.Add(oldVisibleChunkPosition);
+
+            foreach (Vector2DInt lostVisibleChunkPosition in lostVisibleChunkPositions)
+                World.instance.chunkManager.GetChunk(lostVisibleChunkPosition).RemoveWitness(_user);
         }
     }
 }
