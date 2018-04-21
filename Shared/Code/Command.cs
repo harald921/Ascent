@@ -12,7 +12,7 @@ public abstract partial class Command
     public virtual void RecieveAndExecute(NetIncomingMessage inMsg) { }
 
 
-    public void Send(NetPeer inSourcePeer, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableUnordered)
+    public void Send(NetPeer inSourcePeer, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableOrdered)
     {
         NetOutgoingMessage newMessage = inSourcePeer.CreateMessage();
 
@@ -24,6 +24,11 @@ public abstract partial class Command
         NetworkManager.instance.Send(newMessage, inTargetConnection, inDeliveryMethod);
     }
 
+    public static void SendMultiple(Command[] inCommands, NetPeer inSourcePeer, NetConnection inTargetConnection, NetDeliveryMethod inDeliveryMethod = NetDeliveryMethod.ReliableOrdered)
+    {
+        foreach (Command commandToSend in inCommands)
+            commandToSend.Send(inSourcePeer, inTargetConnection, inDeliveryMethod);
+    }
 
     public partial class Server
     {

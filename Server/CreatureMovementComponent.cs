@@ -15,8 +15,9 @@ partial class Creature
 
         public Vector2DInt currentPosition => _currentTile.worldPosition;
 
-        public event Action<Vector2DInt> OnChunkEnter;
-        public event Action<Vector2DInt> OnChunkExit;
+        public event Action<Vector2DInt> OnChunkEnter;             // Params: newChunkPosition
+        public event Action<Vector2DInt, Vector2DInt> OnChunkExit; // Params: newChunkPosition, oldChunkPosition
+
 
         public MovementComponent(Creature inCreature, Tile inSpawnTile)
         {
@@ -46,7 +47,7 @@ partial class Creature
             if (inFromTile.chunkPosition != inToTile.chunkPosition)
             {
                 OnChunkEnter?.Invoke(inToTile.chunkPosition);
-                OnChunkExit?.Invoke(inFromTile.chunkPosition);
+                OnChunkExit?.Invoke(inToTile.chunkPosition, inFromTile.chunkPosition);
             }
                 
             Console.WriteLine("Moved from " + inFromTile.localPosition.x + "," + inFromTile.localPosition.y + 
