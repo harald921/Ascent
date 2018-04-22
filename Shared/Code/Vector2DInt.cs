@@ -33,6 +33,13 @@ public struct Vector2DInt : IPackable
             y = inVector1.y + inVector2.y
         };
 
+    public static Vector2DInt operator -(Vector2DInt inVector1, Vector2DInt inVector2) =>
+        new Vector2DInt()
+        {
+            x = inVector1.x - inVector2.x,
+            y = inVector1.y - inVector2.y
+        };
+
     public static Vector2DInt operator* (Vector2DInt inVector1, int inInt) =>
         new Vector2DInt()
         {

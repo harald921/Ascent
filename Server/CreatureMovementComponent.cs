@@ -44,12 +44,36 @@ partial class Creature
             inToTile.CharacterEnter(_creature);
 
 
+            User[] enteredTileWitnesses = World.instance.chunkManager.GetChunk(inToTile.chunkPosition).GetWitnesses();
+
             if (inFromTile.chunkPosition != inToTile.chunkPosition)
             {
+                // Send a create creature command for all witnesses
+                foreach (User witness in enteredTileWitnesses)
+                {
+                    new Command.Client.CreateCreature(new Command.Client.CreateCreature.Data()
+                    {
+                        creatureGuid       = _creature.guid,
+                        spawnWorldPosition = currentPosition
+                    }).Send(NetworkManager.instance.server, witness.connection);
+                }
+
                 OnChunkEnter?.Invoke(inToTile.chunkPosition);
                 OnChunkExit?.Invoke(inToTile.chunkPosition, inFromTile.chunkPosition);
             }
-                
+
+            else
+            {
+                foreach (User witness in enteredTileWitnesses)
+                {
+                    new Command.Client.MoveCreature(new Command.Client.MoveCreature.Data()
+                    {
+                        creatureGuid = _creature.guid,
+                        moveDirection = inToTile.worldPosition - inFromTile.worldPosition,
+                    }).Send(NetworkManager.instance.server, witness.connection);
+                }
+            }
+
             Console.WriteLine("Moved from " + inFromTile.localPosition.x + "," + inFromTile.localPosition.y + 
                               " to "        + inToTile.localPosition.x   + "," + inToTile.localPosition.y   +
                               "   Chunk: "  + World.ChunkManager.WorldPosToChunkPos(inToTile.worldPosition).ToString());
